@@ -54,5 +54,10 @@ namespace RectanglesZoom2
         {
             get { return _tilePosition.X; }
         }
+
+        public ushort Zoom
+        {
+            get { return _zoom; }
+        }
     }
 }

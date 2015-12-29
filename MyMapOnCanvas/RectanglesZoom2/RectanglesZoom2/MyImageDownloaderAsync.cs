@@ -17,6 +17,7 @@ namespace RectanglesZoom2
 
         private static readonly string CacheFolder;
         const string urlTemplate = @"http://tile.openstreetmap.org/{0}/{1}/{2}.png";
+
         public static async Task<ImageSource> GetImage(byte zoom, int x, int y)
         {
             var max = Math.Pow(2, zoom);

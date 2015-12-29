@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -15,6 +16,7 @@ namespace RectanglesZoom2
 {
     class TileGroup : TileGroupBase
     {
+
         private readonly int _originalZoom;
         private readonly TilePosition _pos;
         private readonly Canvas _canvas;
@@ -23,17 +25,19 @@ namespace RectanglesZoom2
 
         static TileGroup()
         {
+            
             r = new Random(DateTime.Now.Millisecond);
         }
         public TileGroup(int originalZoom, TilePosition pos, Canvas canvas)
         {
+          
             currentZoom = _originalZoom = originalZoom;
             _pos = pos;
             _canvas = canvas;
 
             Background = new SolidColorBrush(Colors.Gray);
             Width = Height = Constants.TileSize;
-           AddSingle();
+            //AddSingle();
         }
 
         public async void AddSingle()
@@ -45,14 +49,14 @@ namespace RectanglesZoom2
         }
 
         private async void AddSingle(int zoom)
-        { 
-            
+        {
+            this.
             //var rect = new Rectangle();
             //rect.Stroke = GetRandomBrush();
             //rect.Width = rect.Height = Constants.TileSize;
             //rect.AddSingle = GetRandomBrush();
             Children.Clear();
-            Rows = Columns = 1;
+           // Rows = Columns = 1;
             var rect = new Tile(_pos, (ushort)zoom);
 
             this.Children.Add(rect);
@@ -63,14 +67,57 @@ namespace RectanglesZoom2
 
         private async Task UploadIfVisible(Tile rect)
         {
-           
-           
-                await rect.Upload();
-                Debug.Print("rect uploaded");
-         
-      
-        
+            try
+            { 
+                var scrnpoint=   rect.PointToScreen(new Point(0, 0));
+                var cpoint= _canvas.PointToScreen(new Point(0, 0));
+
+            }
+            catch (Exception)
+            {
+                
+               
+            }
+       
+            await rect.Upload();
+            Debug.Print("rect uploaded zoom {0} x {1} y {2}", rect.Zoom, rect.X, rect.Y);
+            Debug.Print("width {0}", rect.Width);
+            Debug.Print("actwidth {0}", rect.ActualWidth);
+            Debug.Print("pos:{0}", GetCoords());
         }
+
+        public Point GetCoords()
+        {
+            try
+            {
+                if (ParentCanvas != null)
+                {
+                    var x = Canvas.GetLeft(this);
+                    var y = Canvas.GetTop(this);
+                    return new Point(x, y);
+                }
+                else
+                {
+                    var p = ParentTileGroup.GetCoords();
+                    if (_pos.X != 0)
+                    {
+                        p.Offset(256, 0);
+                    }
+                    if (_pos.Y != 0)
+                    {
+                        p.Offset(0, 256);
+                    }
+                    return p;
+                }
+            }
+            catch (Exception)
+            {
+
+                return new Point(double.NaN, double.NaN);
+            }
+
+        }
+
 
         private static Brush GetRandomBrush()
         {
@@ -95,6 +142,11 @@ namespace RectanglesZoom2
                 return Parent as Canvas;
 
             }
+        }
+
+        public TileGroup ParentTileGroup
+        {
+            get { return Parent as TileGroup; }
         }
 
         Point GetCenter()
@@ -155,11 +207,11 @@ namespace RectanglesZoom2
                     };
 
 
-                    this.Rows = this.Columns = 2;
+                    //this.Rows = this.Columns = 2;
                     foreach (var tg in tgarr)
                     {
                         Children.Add(tg);
-                       // tg.AddSingle();
+                        tg.AddSingle();
                     }
 
 
@@ -188,14 +240,21 @@ namespace RectanglesZoom2
 
         public async void MoveTopLeftToPoint(Point newTopLeft)
         {
+            var old = GetLeftTopPoint();
             Canvas.SetTop(this, newTopLeft.Y);
             Canvas.SetLeft(this, newTopLeft.X);
-            //foreach (Tile child in Children.OfType<Tile>())
-            //{
-              
-            //   await UploadIfVisible(child);
-            //}
+
+            foreach (Tile child in Children.OfType<Tile>())
+            {
+
+                await UploadIfVisible(child);
+            }
+
+
         }
+
+
+
         /// <summary>
         /// возвращает точку куда надо переместить левый верхний угол при зуммировании
         /// </summary>
