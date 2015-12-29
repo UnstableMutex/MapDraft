@@ -65,7 +65,7 @@ namespace RectanglesZoom2
                 request.Proxy = WebRequest.DefaultWebProxy;
                 request.Proxy.Credentials = CredentialCache.DefaultNetworkCredentials;
                 buffer = new MemoryStream();
-                Debug.WriteLine("GETRESP");
+             
                 using (var response =await request.GetResponseAsync())
                 {
                     var stream = response.GetResponseStream();

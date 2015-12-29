@@ -17,7 +17,7 @@ namespace RectanglesZoom2
         {
             var tile = new TileGroup(0, new TilePosition() { X = 0, Y = 0 },this);
             Children.Add(tile);
-            tile.AddSingle();
+        
             tile.MoveTopLeftToPoint(new Point(0, 0));
          
 

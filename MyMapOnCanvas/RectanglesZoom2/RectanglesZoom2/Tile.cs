@@ -32,11 +32,11 @@ namespace RectanglesZoom2
                 var imagesource = await MyImageDownloaderAsync.GetImage((byte)_zoom, _tilePosition.X, _tilePosition.Y);
                 
                 this.Source = imagesource;
-                Debug.Print("SETSOURCE");
+             
             }
             catch (FileNotFoundException)
             {
-                Debug.Print("ERR");
+               
 
             }
         }
