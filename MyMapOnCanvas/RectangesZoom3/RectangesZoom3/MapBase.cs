@@ -4,16 +4,46 @@ using System.Windows.Input;
 
 namespace RectangesZoom3
 {
-    class MapBase : Canvas
+  abstract  class MapBase : Canvas
     {
-        private bool _mouseCaptured;
-        private Point _previousMouse;
+        private int currentZoom=0;
+       
 
-        protected virtual void OnDragMap(Vector v)
+        protected abstract void OnZoom(Point mouse,  int currentZoom, int newZoom);
+       
+
+        protected override void OnMouseWheel(MouseWheelEventArgs e)
         {
+
+            var newzoom = 0;
+            if (e.Delta < 0)
+            {
+                newzoom = currentZoom + 1;
+            }
+            else
+            {
+                newzoom = currentZoom - 1;
+            }
+            if (newzoom < 0 | newzoom > 15)
+            {
+                return;
+
+            }
+            else
+            { 
+                Zoom(e.GetPosition(this), currentZoom,newzoom);
+                currentZoom = newzoom;
+            }
+
+         
 
         }
 
+        private bool _mouseCaptured;
+        private Point _previousMouse;
+
+      protected abstract void OnDragMap(Vector v);
+      
         /// <summary>Tries to capture the mouse to enable dragging of the map.</summary>
         /// <param name="e">The MouseButtonEventArgs that contains the event data.</param>
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
