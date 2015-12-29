@@ -6,16 +6,16 @@ namespace RectangesZoom3
 {
   abstract  class MapBase : Canvas
     {
-        private int currentZoom=0;
+        private byte currentZoom=0;
        
 
-        protected abstract void OnZoom(Point mouse,  int currentZoom, int newZoom);
+        protected abstract void OnZoom(Point mouse,  byte currentZoom, byte newZoom);
        
 
         protected override void OnMouseWheel(MouseWheelEventArgs e)
         {
 
-            var newzoom = 0;
+            int newzoom = 0;
             if (e.Delta < 0)
             {
                 newzoom = currentZoom + 1;
@@ -31,8 +31,8 @@ namespace RectangesZoom3
             }
             else
             { 
-                OnZoom(e.GetPosition(this), currentZoom,newzoom);
-                currentZoom = newzoom;
+                OnZoom(e.GetPosition(this), currentZoom,(byte)newzoom);
+                currentZoom = (byte)newzoom;
             }
 
          

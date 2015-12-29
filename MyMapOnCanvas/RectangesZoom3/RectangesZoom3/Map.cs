@@ -21,14 +21,16 @@ namespace RectangesZoom3
                 zoomLayers.Add(item.Zoom, item);
             }
         }
-        protected override void OnZoom(Point mouse, int currentZoom, int newZoom)
+        protected override void OnZoom(Point mouse, byte currentZoom, byte newZoom)
         {
-
+            zoomLayers.OnZoom(mouse, currentZoom, newZoom);
         }
+
+       
 
         protected override void OnDragMap(Vector v)
         {
-
+            zoomLayers.OnDragMap(v);
         }
     }
 
