@@ -11,53 +11,81 @@ namespace RectangesZoom3
 {
     class Map : MapBase
     {
+        public Tile[] Tiles
+        {
+            get { return Children.OfType<Tile>().ToArray(); }
+        }
         private ZoomItemsCollection zoomLayers;
         public Map()
         {
-            var arr = Enumerable.Range(0, 15).Select(x => new ZoomItems((byte)x,this)).OrderBy(x => x.Zoom).ToArray();
-            zoomLayers = new ZoomItemsCollection();
+            var arr = Enumerable.Range(0, 15).Select(x => new ZoomItems((byte)x, this)).OrderBy(x => x.Zoom).ToArray();
+            zoomLayers = new ZoomItemsCollection(2);
             foreach (var item in arr)
             {
                 zoomLayers.Add(item.Zoom, item);
             }
         }
+
+
+        private Rect viewPort;
+        private byte zoomFactor = 2;
         protected override void OnZoom(Point mouse, byte currentZoom, byte newZoom)
         {
-            zoomLayers.OnZoom(mouse, currentZoom, newZoom);
+
+            var offsetForZoom = -1 * (mouse - viewPort.TopLeft) * zoomFactor;
+            var old = viewPort;
+            var scaleMultiplier = Math.Pow(zoomFactor, newZoom - currentZoom);
+
+            viewPort.Scale(scaleMultiplier, scaleMultiplier);
+
+
+            viewPort.Offset(offsetForZoom);
+            ViewPortChange(old, viewPort);
         }
 
-       
+        void ViewPortChange(Rect oldvp, Rect newvp)
+        {
+            
+            zoomLayers.ViewPortChange(oldvp,newvp);
+        }
+
+        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
+        {
+            var oldvp = viewPort;
+            var newvp = new Rect(oldvp.TopLeft,sizeInfo.NewSize);
+            ViewPortChange(oldvp,newvp);
+
+        }
+
 
         protected override void OnDragMap(Vector v)
         {
-            zoomLayers.OnDragMap(v);
+            var old = viewPort;
+            viewPort.Offset(v);
+            ViewPortChange(old, viewPort);
         }
     }
 
     class ZoomItemsCollection : SortedList<byte, ZoomItems>
     {
-
-        public ZoomItemsCollection()
+        private readonly byte _initialZoom;
+     
+        public ZoomItemsCollection(byte initialZoom)
         {
+            _initialZoom = initialZoom;
+            var multi = Math.Pow(2, initialZoom);
+          //  viewPort = new Rect(0, 0, Constants.TileSize * multi, Constants.TileSize * multi);
 
         }
-        public void OnZoom(Point mouse, byte currentZoom, byte newZoom)
-        {
-            foreach (var item in this)
-            {
-                item.Value.OnZoom(mouse, currentZoom, newZoom);
-            }
-
-        }
-
-        public void OnDragMap(Vector v)
+        public void ViewPortChange(Rect oldvp, Rect newvp)
         {
             foreach (var item in this)
             {
-                item.Value.OnDragMap(v);
+                item.Value.OnViewPortChange(oldvp,newvp);
             }
         }
 
+      
     }
 
 
@@ -65,21 +93,39 @@ namespace RectangesZoom3
     {
         private readonly byte _zoom;
         private readonly Map _map;
-
-        public ZoomItems(byte zoom,Map map)
+        private bool _activeLayer;
+        public ZoomItems(byte zoom, Map map)
         {
             _zoom = zoom;
             _map = map;
         }
 
-        public void OnZoom(Point mouse, byte currentZoom, byte newZoom)
+        
+        public void OnViewPortChange(Rect oldvp,Rect newvp)
         {
-            
-        }
+            var oldmulti = oldvp.Width/Constants.TileSize;
+            var oldzoom = Math.Log(oldmulti,2) - 1;
+            var newZoom = Math.Log(oldvp.Height/Constants.TileSize, 2) - 1;
 
-        public void OnDragMap(Vector v)
-        {
-            
+            if (Zoom == oldzoom)
+            {
+                //если зум усттарел надо убрать тайлы
+                foreach (var tile in _map.Tiles)
+                {
+                    _map.Children.Remove(tile);
+                }
+
+            }
+            if (Zoom == newZoom)
+            {
+                //если зум новый то добавить тайлы
+
+            }
+
+
+
+
+
         }
         public byte Zoom
         {
