@@ -24,7 +24,7 @@ namespace RectanglesZoom2
 
         }
 
-        public async Task Upload()
+        public void Upload()
         {
 
             try
@@ -32,7 +32,7 @@ namespace RectanglesZoom2
                 if (Source == null)
                 {
                     var imagesource =
-                        await MyImageDownloaderAsync.GetImage((byte) _zoom, _tilePosition.X, _tilePosition.Y);
+                         MyImageDownloaderAsync.GetImageS((byte) _zoom, _tilePosition.X, _tilePosition.Y);
 
                     this.Source = imagesource;
                 }

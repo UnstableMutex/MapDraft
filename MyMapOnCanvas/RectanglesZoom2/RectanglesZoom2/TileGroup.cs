@@ -25,12 +25,12 @@ namespace RectanglesZoom2
 
         static TileGroup()
         {
-            
+
             r = new Random(DateTime.Now.Millisecond);
         }
         public TileGroup(int originalZoom, TilePosition pos, Canvas canvas)
         {
-          
+
             currentZoom = _originalZoom = originalZoom;
             _pos = pos;
             _canvas = canvas;
@@ -51,12 +51,12 @@ namespace RectanglesZoom2
         private async void AddSingle(int zoom)
         {
             this.
-            //var rect = new Rectangle();
-            //rect.Stroke = GetRandomBrush();
-            //rect.Width = rect.Height = Constants.TileSize;
-            //rect.AddSingle = GetRandomBrush();
+                //var rect = new Rectangle();
+                //rect.Stroke = GetRandomBrush();
+                //rect.Width = rect.Height = Constants.TileSize;
+                //rect.AddSingle = GetRandomBrush();
             Children.Clear();
-           // Rows = Columns = 1;
+            // Rows = Columns = 1;
             var rect = new Tile(_pos, (ushort)zoom);
 
             this.Children.Add(rect);
@@ -68,22 +68,35 @@ namespace RectanglesZoom2
         private async Task UploadIfVisible(Tile rect)
         {
             try
-            { 
-                var scrnpoint=   rect.PointToScreen(new Point(0, 0));
-                var cpoint= _canvas.PointToScreen(new Point(0, 0));
-
+            {
+                var scrnpoint = rect.PointToScreen(new Point(0, 0));
+                var cpoint = _canvas.PointToScreen(new Point(0, 0));
+                var c = this.GetCoords();
+   //             Debug.Print("pos:{0}", c);
+   //Debug.Print("cwidth:{0} cheight {1}", _canvas.ActualWidth,_canvas.ActualHeight);
+                if (!Visible())
+                {
+                   // Debug.Print("not loaded");
+                    rect.Source = null;
+                }
+                else
+                {
+                      rect.Upload();  
+                }
+                
+             
             }
             catch (Exception)
             {
-                
-               
+
+
             }
-       
-            await rect.Upload();
-            Debug.Print("rect uploaded zoom {0} x {1} y {2}", rect.Zoom, rect.X, rect.Y);
-            Debug.Print("width {0}", rect.Width);
-            Debug.Print("actwidth {0}", rect.ActualWidth);
-            Debug.Print("pos:{0}", GetCoords());
+
+         
+            //Debug.Print("rect uploaded zoom {0} x {1} y {2}", rect.Zoom, rect.X, rect.Y);
+            //Debug.Print("width {0}", rect.Width);
+            //Debug.Print("actwidth {0}", rect.ActualWidth);
+            //Debug.Print("pos:{0}", GetCoords());
         }
 
         public Point GetCoords()
@@ -115,6 +128,16 @@ namespace RectanglesZoom2
 
                 return new Point(double.NaN, double.NaN);
             }
+
+        }
+
+        public bool Visible()
+        {
+            var p = GetCoords();
+            var cp = new Point(_canvas.ActualWidth, _canvas.ActualHeight);
+
+            var res = p.X > cp.X | p.Y > cp.Y | p.X + this.Width < 0 | p.Y + Height < 0;
+            return !res;
 
         }
 
@@ -249,10 +272,33 @@ namespace RectanglesZoom2
 
                 await UploadIfVisible(child);
             }
+            foreach (TileGroup child in Children.OfType<TileGroup>())
+            {
+                if (child.Visible())
+                {
+                    child.PositionChanged();
+                }
+            }
 
 
         }
 
+        private void PositionChanged()
+        {
+            foreach (TileGroup child in Children.OfType<TileGroup>())
+            {
+                if (child.Visible())
+                {
+                    child.PositionChanged();
+                }
+            }
+            foreach (Tile child in Children.OfType<Tile>())
+            {
+
+                 UploadIfVisible(child);
+            }
+
+        }
 
 
         /// <summary>

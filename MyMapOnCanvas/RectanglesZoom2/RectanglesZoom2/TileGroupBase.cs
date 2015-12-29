@@ -18,12 +18,38 @@ namespace RectanglesZoom2
 
         }
 
+        public Point GetCoords()
+        {
+            if (this.Parent is Canvas)
+            {
+                var x = Canvas.GetLeft(this);
+                var y = Canvas.GetTop(this);
+                return new Point(x, y);
+            }
+            else
+            {
+                var points1 = new Point[]
+            {
+                new Point(0,0),new Point(this.Width,0),new Point(0,this.Height),
+                new Point(this.Width,this.Height)    
+            };
+                var p = Parent as TileGroupBase;
+                var c = p.GetCoords();
+                var index = p.InternalChildren.IndexOf(this);
+                var p1 = points1[index];
+                c.Offset(p1.X, p1.Y);
+                return c;
+
+            }
+
+        }
+
         //будет содержать либо 4 итема либо 1
         protected override Size ArrangeOverride(Size finalSize)
         {
             // Перебрать все дочерние элементы.
             var size = new Size(finalSize.Width / 2, finalSize.Height / 2);
-            var points =new Point[]
+            var points = new Point[]
             {
                 new Point(0,0),new Point(size.Width,0),new Point(0,size.Height),new Point(size.Width,size.Height)    
             };
