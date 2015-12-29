@@ -1,0 +1,25 @@
+﻿<Window x:Class="MyOwnMap.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525">
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Left">
+            <Button Click="zoominc">zoom+</Button>
+            <Button Click="zoomdec">zoom-</Button>
+        </StackPanel>
+        <Grid>
+            
+           <Canvas ClipToBounds="True"
+        MouseLeftButtonUp="LeftButtonUp"
+        MouseLeftButtonDown="LeftButtonDown"
+        MouseMove="MouseMove"
+                   MouseWheel="MouseWheel"
+        SizeChanged="C_OnSizeChanged" Name="c"/>   
+            <Canvas>
+                
+            </Canvas>
+        </Grid>
+      
+        
+    </DockPanel>
+</Window>

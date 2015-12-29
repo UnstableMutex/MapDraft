@@ -1,0 +1,8 @@
+﻿<Window x:Class="TestZoom.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525">
+    <Canvas Background="Transparent" MouseWheel="C_OnMouseWheel" Name="c">
+        <Rectangle Name="r" Width="100" Height="100" Canvas.Top="20" Canvas.Left="20" Fill="Aqua"/>
+    </Canvas>
+</Window>

@@ -1,0 +1,376 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MapControl</name>
+    </assembly>
+    <members>
+        <member name="T:MapControl.TilePanel">
+            <summary>Displays a grid of Tiles.</summary>
+        </member>
+        <member name="M:MapControl.TilePanel.#ctor">
+            <summary>Initializes a new instance of the TilePanel class.</summary>
+        </member>
+        <member name="M:MapControl.TilePanel.Update">
+            <summary>Re-arranges the Tiles inside the grid.</summary>
+            <remarks>The control will only update itself when RequiresUpdate returns true.</remarks>
+        </member>
+        <member name="M:MapControl.TilePanel.OnRenderSizeChanged(System.Windows.SizeChangedInfo)">
+            <summary>Ensures the grid has the correct number of rows and columns.</summary>
+            <param name="sizeInfo">Details of the old and new size involved in the change.</param>
+        </member>
+        <member name="M:MapControl.TilePanel.ChangeColumns(System.Int32)">
+            <summary>Moves the Tile's column by the specified amount.</summary>
+            <param name="amount">The amount to change the column by.</param>
+        </member>
+        <member name="M:MapControl.TilePanel.ChangeRows(System.Int32)">
+            <summary>Moves the Tile's row by the specified amount.</summary>
+            <param name="amount">The amount to change the row by.</param>
+        </member>
+        <member name="M:MapControl.TilePanel.ChangeTiles(System.Action{MapControl.Tile})">
+            <summary>Repositions the Tiles after any changes.</summary>
+            <param name="changeTile">Called on every Tile to allow changes to be made to its position.</param>
+        </member>
+        <member name="M:MapControl.TilePanel.RegenerateTiles">
+            <summary>Clears and the reloads all the Tiles contained in the control.</summary>
+        </member>
+        <member name="P:MapControl.TilePanel.LeftTile">
+            <summary>Gets or sets the tile index at the left edge of the control.</summary>
+        </member>
+        <member name="P:MapControl.TilePanel.TopTile">
+            <summary>Gets or sets the tile index at the top edge of the control.</summary>
+        </member>
+        <member name="P:MapControl.TilePanel.RequiresUpdate">
+            <summary>Gets a value indicating whether a call to Update is required.</summary>
+        </member>
+        <member name="P:MapControl.TilePanel.Zoom">
+            <summary>Gets or sets the zoom level for the tiles.</summary>
+        </member>
+        <member name="T:MapControl.BitmapStore">
+            <summary>
+            Manages cacheing and downloading of images from openstreetmap.org
+            </summary>
+        </member>
+        <member name="M:MapControl.BitmapStore.GetImage(System.Uri)">
+            <summary>
+            Retreieves the image for the specified uri, using the cache if
+            available.
+            </summary>
+            <param name="uri">The uri of the file to load.</param>
+            <returns>
+            A BitmapImage for the specified uri, or null if an error occured.
+            </returns>
+        </member>
+        <member name="E:MapControl.BitmapStore.DownloadCountChanged">
+            <summary>Occurs when the value of DownloadCount has changed.</summary>
+        </member>
+        <member name="E:MapControl.BitmapStore.DownloadError">
+            <summary>Occurs when there is an error downloading a Tile.</summary>
+        </member>
+        <member name="P:MapControl.BitmapStore.CacheFolder">
+            <summary>Gets or sets the folder used to store the downloaded tiles.</summary>
+            <remarks>This must be set before any call to GetTileImage.</remarks>
+        </member>
+        <member name="P:MapControl.BitmapStore.DownloadCount">
+            <summary>Gets the number of Tiles requested to be downloaded.</summary>
+            <remarks>This is not the number of active downloads.</remarks>
+        </member>
+        <member name="P:MapControl.BitmapStore.UserAgent">
+            <summary>Gets or sets the user agent used to make the tile request.</summary>
+            <remarks>This should be set before any call to GetTileImage.</remarks>
+        </member>
+        <member name="T:MapControl.MapCanvas">
+            <summary>Displays a map using data from openstreetmap.org.</summary>
+            <summary>Displays a map using data from openstreetmap.org.</summary>
+        </member>
+        <member name="F:MapControl.MapCanvas.LatitudeProperty">
+            <summary>Identifies the Latitude attached property.</summary>
+        </member>
+        <member name="F:MapControl.MapCanvas.LongitudeProperty">
+            <summary>Identifies the Longitude attached property.</summary>
+        </member>
+        <member name="F:MapControl.MapCanvas.ViewportProperty">
+            <summary>Identifies the Viewport dependency property.</summary>
+        </member>
+        <member name="F:MapControl.MapCanvas.ZoomProperty">
+            <summary>Identifies the Zoom dependency property.</summary>
+        </member>
+        <member name="M:MapControl.MapCanvas.#cctor">
+            <summary>Initializes static members of the MapCanvas class. Also registers command bindings.</summary>
+        </member>
+        <member name="M:MapControl.MapCanvas.#ctor">
+            <summary>Initializes a new instance of the MapCanvas class.</summary>
+        </member>
+        <member name="M:MapControl.MapCanvas.GetLatitude(System.Windows.DependencyObject)">
+            <summary>Gets the value of the Latitude attached property for a given depencency object.</summary>
+            <param name="obj">The element from which the property value is read.</param>
+            <returns>The Latitude coordinate of the specified element.</returns>
+        </member>
+        <member name="M:MapControl.MapCanvas.GetLongitude(System.Windows.DependencyObject)">
+            <summary>Gets the value of the Longitude attached property for a given depencency object.</summary>
+            <param name="obj">The element from which the property value is read.</param>
+            <returns>The Longitude coordinate of the specified element.</returns>
+        </member>
+        <member name="M:MapControl.MapCanvas.SetLatitude(System.Windows.DependencyObject,System.Double)">
+            <summary>Sets the value of the Latitude attached property for a given depencency object.</summary>
+            <param name="obj">The element to which the property value is written.</param>
+            <param name="value">Sets the Latitude coordinate of the specified element.</param>
+        </member>
+        <member name="M:MapControl.MapCanvas.SetLongitude(System.Windows.DependencyObject,System.Double)">
+            <summary>Sets the value of the Longitude attached property for a given depencency object.</summary>
+            <param name="obj">The element to which the property value is written.</param>
+            <param name="value">Sets the Longitude coordinate of the specified element.</param>
+        </member>
+        <member name="M:MapControl.MapCanvas.Center(System.Double,System.Double,System.Int32)">
+            <summary>Centers the map on the specified coordinates.</summary>
+            <param name="latitude">The latitude cooridinate.</param>
+            <param name="longitude">The longitude coordinates.</param>
+            <param name="zoom">The zoom level for the map.</param>
+        </member>
+        <member name="M:MapControl.MapCanvas.Center(System.Double,System.Double,System.Windows.Size)">
+            <summary>Centers the map on the specified coordinates, calculating the required zoom level.</summary>
+            <param name="latitude">The latitude cooridinate.</param>
+            <param name="longitude">The longitude coordinates.</param>
+            <param name="size">The minimum size that must be visible, centered on the coordinates.</param>
+        </member>
+        <member name="M:MapControl.MapCanvas.CreateImage">
+            <summary>Creates a static image of the current view.</summary>
+            <returns>An image of the current map.</returns>
+        </member>
+        <member name="M:MapControl.MapCanvas.GetLocation(System.Windows.Point)">
+            <summary>Calculates the coordinates of the specifed point.</summary>
+            <param name="point">A point, in pixels, relative to the top left corner of the control.</param>
+            <returns>A Point filled with the Latitude (Y) and Longitude (X) of the specifide point.</returns>
+        </member>
+        <member name="M:MapControl.MapCanvas.OnMouseLeftButtonDown(System.Windows.Input.MouseButtonEventArgs)">
+            <summary>Tries to capture the mouse to enable dragging of the map.</summary>
+            <param name="e">The MouseButtonEventArgs that contains the event data.</param>
+        </member>
+        <member name="M:MapControl.MapCanvas.OnMouseLeftButtonUp(System.Windows.Input.MouseButtonEventArgs)">
+            <summary>Releases the mouse capture and stops dragging of the map.</summary>
+            <param name="e">The MouseButtonEventArgs that contains the event data.</param>
+        </member>
+        <member name="M:MapControl.MapCanvas.OnMouseMove(System.Windows.Input.MouseEventArgs)">
+            <summary>Drags the map, if the mouse was succesfully captured.</summary>
+            <param name="e">The MouseEventArgs that contains the event data.</param>
+        </member>
+        <member name="M:MapControl.MapCanvas.OnMouseWheel(System.Windows.Input.MouseWheelEventArgs)">
+            <summary>Alters the zoom of the map, maintaing the same point underneath the mouse at the new zoom level.</summary>
+            <param name="e">The MouseWheelEventArgs that contains the event data.</param>
+        </member>
+        <member name="M:MapControl.MapCanvas.OnRenderSizeChanged(System.Windows.SizeChangedInfo)">
+            <summary>Notifies child controls that the size has changed.</summary>
+            <param name="sizeInfo">
+            The packaged parameters (SizeChangedInfo), which includes old and new sizes, and which dimension actually changes.
+            </param>
+        </member>
+        <member name="P:MapControl.MapCanvas.Viewport">
+            <summary>Gets the visible area of the map in latitude/longitude coordinates.</summary>
+        </member>
+        <member name="P:MapControl.MapCanvas.Zoom">
+            <summary>Gets or sets the zoom level of the map.</summary>
+        </member>
+        <member name="T:MapControl.MapCanvas.MapOffset">
+            <summary>Private helper class to handle the X/Y offsets of the TilePanel.</summary>
+        </member>
+        <member name="M:MapControl.MapCanvas.MapOffset.#ctor(System.Reflection.PropertyInfo,System.EventHandler)">
+            <summary>Initializes a new instance of the MapOffset class.</summary>
+            <param name="property">The property this MapOffset represents.</param>
+            <param name="offsetChanged">Called when the Offset changes.</param>
+        </member>
+        <member name="M:MapControl.MapCanvas.MapOffset.AnimateTranslate(System.Double)">
+            <summary>Smoothly translates by the specified amount.</summary>
+            <param name="value">The total distance to translate.</param>
+        </member>
+        <member name="M:MapControl.MapCanvas.MapOffset.CenterOn(System.Double)">
+            <summary>Adjusts the offset so the specifed tile is in the center of the control.</summary>
+            <param name="tile">The tile (allowing fractions of the tile) to be centered.</param>
+        </member>
+        <member name="M:MapControl.MapCanvas.MapOffset.ChangeSize(System.Double)">
+            <summary>Called when the size of the parent control changes.</summary>
+            <param name="size">The nes size of the parent control.</param>
+        </member>
+        <member name="M:MapControl.MapCanvas.MapOffset.ChangeZoom(System.Int32,System.Double)">
+            <summary>Updates the starting tile index based on the zoom level.</summary>
+            <param name="zoom">The zoom level.</param>
+            <param name="offset">The distance from the edge to keep the same when changing zoom.</param>
+        </member>
+        <member name="M:MapControl.MapCanvas.MapOffset.Translate(System.Double)">
+            <summary>Changes the offset by the specified amount.</summary>
+            <param name="value">The amount to change the offset by.</param>
+        </member>
+        <member name="P:MapControl.MapCanvas.MapOffset.Frames">
+            <summary>Gets or sets the number of steps when animating.</summary>
+        </member>
+        <member name="P:MapControl.MapCanvas.MapOffset.Offset">
+            <summary>Gets the offset from the tile edge to the screen edge.</summary>
+        </member>
+        <member name="P:MapControl.MapCanvas.MapOffset.Pixels">
+            <summary>Gets the location of the starting tile in pixels.</summary>
+        </member>
+        <member name="P:MapControl.MapCanvas.MapOffset.Property">
+            <summary>Gets the PropertyInfo associated with this offset.</summary>
+            <remarks>This is used so a generic handler can be called for the _offsetChanged delegate.</remarks>
+        </member>
+        <member name="P:MapControl.MapCanvas.MapOffset.Tile">
+            <summary>Gets the starting tile index.</summary>
+        </member>
+        <member name="T:MapControl.SearchResult">
+            <summary>Represents data retrieved from nominatim.openstreetmap.org.</summary>
+        </member>
+        <member name="M:MapControl.SearchResult.#ctor(System.Int32)">
+            <summary>Initializes a new instance of the SearchResult class.</summary>
+            <param name="index">The index of the returned search result.</param>
+        </member>
+        <member name="P:MapControl.SearchResult.DisplayName">
+            <summary>Gets the formatted name of the search result.</summary>
+        </member>
+        <member name="P:MapControl.SearchResult.Index">
+            <summary>Gets the returned index from the search.</summary>
+        </member>
+        <member name="P:MapControl.SearchResult.Latitude">
+            <summary>Gets the latitude coordinate of the center of the search result.</summary>
+        </member>
+        <member name="P:MapControl.SearchResult.Longitude">
+            <summary>Gets the longitude coordinate of the center of the search result.</summary>
+        </member>
+        <member name="P:MapControl.SearchResult.Size">
+            <summary>Gets the size of the search's bounding box.</summary>
+        </member>
+        <member name="T:MapControl.SearchErrorEventArgs">
+            <summary>Provides data for the SearchError event.</summary>
+        </member>
+        <member name="M:MapControl.SearchErrorEventArgs.#ctor(System.String)">
+            <summary>Initializes a new instance of the SearchErrorEventArgs class.</summary>
+            <param name="error">The error message.</param>
+        </member>
+        <member name="P:MapControl.SearchErrorEventArgs.Error">
+            <summary>Gets the error generated by the search.</summary>
+        </member>
+        <member name="T:MapControl.Tile">
+            <summary>Represents a single map tile.</summary>
+        </member>
+        <member name="M:MapControl.Tile.#ctor(System.Int32,System.Int32,System.Int32)">
+            <summary>Initializes a new instance of the Tile class.</summary>
+            <param name="zoom">The zoom level for the tile.</param>
+            <param name="x">The tile index along the X axis.</param>
+            <param name="y">The tile index along the Y axis.</param>
+        </member>
+        <member name="P:MapControl.Tile.TileX">
+            <summary>Gets or sets the tile index along the X axis.</summary>
+        </member>
+        <member name="P:MapControl.Tile.TileY">
+            <summary>Gets or sets the tile index along the Y axis.</summary>
+        </member>
+        <member name="P:MapControl.Tile.Column">
+            <summary>Gets or sets the column index of the tile.</summary>
+        </member>
+        <member name="P:MapControl.Tile.Row">
+            <summary>Gets or sets the row index of the tile.</summary>
+        </member>
+        <member name="T:MapControl.SearchProvider">
+            <summary>Uses nominatim.openstreetmap.org to search for the specified information.</summary>
+        </member>
+        <member name="M:MapControl.SearchProvider.Search(System.String,System.Windows.Rect)">
+            <summary>Searches for the specified query in the specified area.</summary>
+            <param name="query">The information to search for.</param>
+            <param name="area">The area to localize results.</param>
+            <returns>True if search has started, false otherwise.</returns>
+            <remarks>
+            The query is first parsed to see if it is a valid coordinate, if not then then a search
+            is carried out using nominatim.openstreetmap.org. A return valid of false, therefore,
+            doesn't indicate the method has failed, just that there was no need to perform an online search.
+            </remarks>
+        </member>
+        <member name="E:MapControl.SearchProvider.SearchCompleted">
+            <summary>Occurs when the search has completed.</summary>
+        </member>
+        <member name="E:MapControl.SearchProvider.SearchError">
+            <summary>Occurs if there were errors during the search.</summary>
+        </member>
+        <member name="P:MapControl.SearchProvider.Results">
+            <summary>Gets the results returned from the most recent search.</summary>
+        </member>
+        <member name="T:MapControl.TileGenerator">
+            <summary>Helper methods to retrieve information from openstreetmap.org</summary>
+            <remarks>See http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames for reference.</remarks>
+        </member>
+        <member name="F:MapControl.TileGenerator.MaxZoom">
+            <summary>The maximum allowed zoom level.</summary>
+        </member>
+        <member name="F:MapControl.TileGenerator.TileSize">
+            <summary>The size of a tile in pixels.</summary>
+        </member>
+        <member name="M:MapControl.TileGenerator.GetValidZoom(System.Int32)">
+            <summary>Returns a valid value for the specified zoom.</summary>
+            <param name="zoom">The zoom level to validate.</param>
+            <returns>A value in the range of 0 - MaxZoom inclusive.</returns>
+        </member>
+        <member name="M:MapControl.TileGenerator.GetLatitude(System.Double,System.Int32)">
+            <summary>Returns the latitude for the specified tile number.</summary>
+            <param name="tileY">The tile number along the Y axis.</param>
+            <param name="zoom">The zoom level of the tile index.</param>
+            <returns>A decimal degree for the latitude, limited to aproximately +- 85.0511 degrees.</returns>
+        </member>
+        <member name="M:MapControl.TileGenerator.GetLongitude(System.Double,System.Int32)">
+            <summary>Returns the longitude for the specified tile number.</summary>
+            <param name="tileX">The tile number along the X axis.</param>
+            <param name="zoom">The zoom level of the tile index.</param>
+            <returns>A decimal degree for the longitude, limited to +- 180 degrees.</returns>
+        </member>
+        <member name="M:MapControl.TileGenerator.GetSize(System.Int32)">
+            <summary>Returns the maximum size, in pixels, for the specifed zoom level.</summary>
+            <param name="zoom">The zoom level to calculate the size for.</param>
+            <returns>The size in pixels.</returns>
+        </member>
+        <member name="M:MapControl.TileGenerator.GetTileX(System.Double,System.Int32)">
+            <summary>Returns the tile index along the X axis for the specified longitude.</summary>
+            <param name="longitude">The longitude coordinate.</param>
+            <param name="zoom">The zoom level of the desired tile index.</param>
+            <returns>The tile index along the X axis.</returns>
+            <remarks>The longitude is not checked to be valid and, therefore, the output may not be a valid index.</remarks>
+        </member>
+        <member name="M:MapControl.TileGenerator.GetTileY(System.Double,System.Int32)">
+            <summary>Returns the tile index along the Y axis for the specified latitude.</summary>
+            <param name="latitude">The latitude coordinate.</param>
+            <param name="zoom">The zoom level of the desired tile index.</param>
+            <returns>The tile index along the Y axis.</returns>
+            <remarks>The latitude is not checked to be valid and, therefore, the output may not be a valid index.</remarks>
+        </member>
+        <member name="M:MapControl.TileGenerator.GetTileImage(System.Int32,System.Int32,System.Int32)">
+            <summary>Returns a Tile for the specified area.</summary>
+            <param name="zoom">The zoom level of the desired tile.</param>
+            <param name="x">Tile index along the X axis.</param>
+            <param name="y">Tile index along the Y axis.</param>
+            <returns>
+            If any of the indexes are outside the valid range of tile numbers for the specified zoom level,
+            null will be returned.
+            </returns>
+        </member>
+        <member name="M:MapControl.TileGenerator.GetZoom(System.Double)">
+            <summary>Returns the closest zoom level less than or equal to the specified map size.</summary>
+            <param name="size">The size in pixels.</param>
+            <returns>The closest zoom level for the specified size.</returns>
+        </member>
+        <member name="E:MapControl.TileGenerator.ImageDownloadingProgress">
+            <summary>This event is never called.</summary>
+        </member>
+        <member name="E:MapControl.TileGenerator.DownloadCountChanged">
+            <summary>Occurs when the number of downloads changes.</summary>
+        </member>
+        <member name="E:MapControl.TileGenerator.DownloadError">
+            <summary>Occurs when there is an error downloading a Tile.</summary>
+        </member>
+        <member name="P:MapControl.TileGenerator.CacheFolder">
+            <summary>Gets or sets the folder used to store the downloaded tiles.</summary>
+            <remarks>This must be set before any call to GetTileImage.</remarks>
+        </member>
+        <member name="P:MapControl.TileGenerator.DownloadCount">
+            <summary>Gets the number of Tiles requested to be downloaded.</summary>
+            <remarks>This is not the number of active downloads.</remarks>
+        </member>
+        <member name="P:MapControl.TileGenerator.UserAgent">
+            <summary>Gets or sets the user agent used to make the tile request.</summary>
+            <remarks>This should be set before any call to GetTileImage.</remarks>
+        </member>
+    </members>
+</doc>

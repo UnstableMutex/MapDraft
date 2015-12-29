@@ -1,0 +1,14 @@
+﻿<Window x:Class="RectanglesZoom2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:rectanglesZoom2="clr-namespace:RectanglesZoom2"
+        Title="MainWindow" Height="350" Width="525">
+   <DockPanel>
+<StackPanel DockPanel.Dock="Left">
+    <Button Click="ButtonBase_OnClick">TEST</Button>
+</StackPanel>
+        <rectanglesZoom2:Map ClipToBounds="True" x:Name="map" />
+    </DockPanel>
+   
+
+</Window>
