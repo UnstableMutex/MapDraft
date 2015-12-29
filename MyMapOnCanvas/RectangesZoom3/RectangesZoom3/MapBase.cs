@@ -31,7 +31,7 @@ namespace RectangesZoom3
             }
             else
             { 
-                Zoom(e.GetPosition(this), currentZoom,newzoom);
+                OnZoom(e.GetPosition(this), currentZoom,newzoom);
                 currentZoom = newzoom;
             }
 
