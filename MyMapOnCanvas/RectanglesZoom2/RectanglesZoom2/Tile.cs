@@ -29,10 +29,14 @@ namespace RectanglesZoom2
 
             try
             {
-                var imagesource = await MyImageDownloaderAsync.GetImage((byte)_zoom, _tilePosition.X, _tilePosition.Y);
-                
-                this.Source = imagesource;
-             
+                if (Source == null)
+                {
+                    var imagesource =
+                        await MyImageDownloaderAsync.GetImage((byte) _zoom, _tilePosition.X, _tilePosition.Y);
+
+                    this.Source = imagesource;
+                }
+
             }
             catch (FileNotFoundException)
             {
