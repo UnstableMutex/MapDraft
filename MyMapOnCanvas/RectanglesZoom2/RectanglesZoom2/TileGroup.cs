@@ -33,7 +33,7 @@ namespace RectanglesZoom2
 
             Background = new SolidColorBrush(Colors.Gray);
             Width = Height = Constants.TileSize;
-            // AddSingle();
+            AddSingle();
         }
 
         public async void AddSingle()
@@ -63,20 +63,23 @@ namespace RectanglesZoom2
 
         private async Task UploadIfVisible(Tile rect)
         {
-            var scrnPoint = rect.TranslatePoint(new Point(), _canvas);
-            // var scrnPoint= rect.PointToScreen(new Point(0, 0),_canvas);
-            Double dpiY = _canvas.ActualHeight;
-            var dpiX = _canvas.ActualWidth;
+            //var scrnPoint = rect.TranslatePoint(new Point(), _canvas);
+            //// var scrnPoint= rect.PointToScreen(new Point(0, 0),_canvas);
+            //Double dpiY = _canvas.ActualHeight;
+            //var dpiX = _canvas.ActualWidth;
 
 
-            var isNotVisible = scrnPoint.X > dpiX | scrnPoint.Y > dpiY |
-                               scrnPoint.X < 0 | scrnPoint.Y < 0;
-            //if (dpiX == 0 | dpiY == 0|!isNotVisible)
+            //var isNotVisible = scrnPoint.X > dpiX | scrnPoint.Y > dpiY |
+            //                   scrnPoint.X < 0 | scrnPoint.Y < 0;
+            ////if (dpiX == 0 | dpiY == 0|!isNotVisible)
+            ////{
+            //if (rect.Source == null)
             //{
-               await   rect.Upload();
-              
-               
-           // }
+                await rect.Upload();
+            //}
+
+
+            // }
       
         
         }
