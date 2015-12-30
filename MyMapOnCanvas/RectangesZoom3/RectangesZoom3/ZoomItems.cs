@@ -109,7 +109,11 @@ namespace RectangesZoom3
                     Tile tile = new Tile(tid);
                     try
                     {
-                        querypiccounter++;
+#if DEBUG
+ 
+      querypiccounter++;
+#endif
+                    
                         tile.SetImage();
                     }
                     catch (TileIndexOutOfRangeException)
