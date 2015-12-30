@@ -82,6 +82,7 @@ namespace RectangesZoom3
                 viewPort = new Rect(0, 0, ActualWidth, ActualHeight);
             }
             var oldvp = viewPort;
+
             var newvp = new Rect(oldvp.TopLeft, sizeInfo.NewSize);
    
             ViewPortChange(oldvp, newvp, zoomLayers.Zoom, zoomLayers.Zoom);
@@ -107,7 +108,7 @@ namespace RectangesZoom3
         {
             var isnotvalid = (check.X > 0) | check.Y > 0;
 
-            isnotvalid |= check.BottomRight.X < 0;// | check.BottomRight.Y < 0;
+            isnotvalid |= check.Size.Width - check.X >= Constants.TileSize * Math.Pow(2, zoomLayers.Zoom);// | check.BottomRight.Y < 0;
             isnotvalid |= check.Size.Height - check.Y >= Constants.TileSize * Math.Pow(2, zoomLayers.Zoom);//хз почему
             return !(isnotvalid);
         }
