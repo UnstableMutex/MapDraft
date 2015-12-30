@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -101,6 +102,7 @@ namespace RectangesZoom3
         private bool Validate(Rect check)
         {
             var isnotvalid = (check.X > 0) | check.Y > 0;
+           Debug.Print("checkrect:{0}",check);
             return !(isnotvalid);
         }
     }

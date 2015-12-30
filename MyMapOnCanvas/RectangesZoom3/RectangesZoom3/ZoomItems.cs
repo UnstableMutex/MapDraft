@@ -89,8 +89,8 @@ namespace RectangesZoom3
                 do
                 {
                     var tp = new TilePosition();
-                    tp.X = currentXIndex + firstTileXIndex;
-                    tp.Y = currentYIndex + firstTileYIndex;
+                    tp.X = currentXIndex - firstTileXIndex;
+                    tp.Y = currentYIndex - firstTileYIndex;
 
                     var image = GetImage(tp);
                     Tile tile = new Tile(tp, Zoom);
