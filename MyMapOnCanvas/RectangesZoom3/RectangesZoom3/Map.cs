@@ -88,8 +88,20 @@ namespace RectangesZoom3
         protected override void OnDragMap(Vector v)
         {
             var old = viewPort;
+            var check = viewPort;
+            check.Offset(v);
+            var isvalid = Validate(check);
+            if (!isvalid)
+                return;
+
             viewPort.Offset(v);
             ViewPortChange(old, viewPort,zoomLayers.Zoom,zoomLayers.Zoom);
+        }
+
+        private bool Validate(Rect check)
+        {
+            var isnotvalid = (check.X > 0) | check.Y > 0;
+            return !(isnotvalid);
         }
     }
 }
