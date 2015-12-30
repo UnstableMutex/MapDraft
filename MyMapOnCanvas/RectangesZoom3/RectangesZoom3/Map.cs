@@ -77,6 +77,7 @@ namespace RectangesZoom3
 
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
         {
+
             if (viewPort.IsEmpty)
             {
                 viewPort = new Rect(0, 0, ActualWidth, ActualHeight);
@@ -84,9 +85,25 @@ namespace RectangesZoom3
             var oldvp = viewPort;
 
             var newvp = new Rect(oldvp.TopLeft, sizeInfo.NewSize);
-   
+
+            var valid = Validate(newvp);
+            if (!valid)
+            {
+                var vector = (Point) sizeInfo.NewSize - (Point) sizeInfo.PreviousSize;
+                newvp = oldvp;
+                newvp.Offset(vector);
+                newvp.Size = sizeInfo.NewSize;
+
+            }
+           Debug.Print("valid: {0}",valid);
+          
+          
+           
             ViewPortChange(oldvp, newvp, zoomLayers.Zoom, zoomLayers.Zoom);
-            viewPort = newvp;
+            viewPort = newvp;     
+           
+
+          
 
         }
 
