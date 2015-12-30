@@ -75,10 +75,10 @@ namespace RectangesZoom3
             double vpX = newvp.X;
 
 
-            var firstTileXIndex = (int)Math.Ceiling(vpX / Constants.TileSize);
-            var firstTileYIndex = (int)Math.Ceiling(newvp.Y / Constants.TileSize);
-            var coordX = vpX - firstTileXIndex * Constants.TileSize;
-            var coordY = newvp.Y - firstTileYIndex * Constants.TileSize;
+            var firstTileXIndex = (int)Math.Floor(-1*vpX / Constants.TileSize);
+            var firstTileYIndex = (int)Math.Floor(-1*newvp.Y / Constants.TileSize);
+            var coordX = vpX + firstTileXIndex * Constants.TileSize;
+            var coordY = newvp.Y + firstTileYIndex * Constants.TileSize;
             int currentXIndex = 0;
             int currentYIndex = 0;
             var currentCoordX = coordX;
@@ -91,8 +91,8 @@ namespace RectangesZoom3
                 do
                 {
                     var tp = new TilePosition();
-                    tp.X = currentXIndex - firstTileXIndex;
-                    tp.Y = currentYIndex - firstTileYIndex;
+                    tp.X = currentXIndex + firstTileXIndex;
+                    tp.Y = currentYIndex + firstTileYIndex;
                     Tile tile = new Tile(tp, Zoom);
                     try
                     {
@@ -118,7 +118,7 @@ namespace RectangesZoom3
                         break;
                     }
 
-                } while (currentCoordX <= newvp.Width);
+                } while (currentCoordX <= _map.ActualWidth);
                 currentCoordY += Constants.TileSize;
                 currentYIndex++;
                 currentCoordX = coordX;
@@ -129,7 +129,7 @@ namespace RectangesZoom3
                     break;
 
                 }
-            } while (currentCoordY <= newvp.Height);
+            } while (currentCoordY <= _map.ActualHeight);
 #if DEBUG
         Debug.Print("qpc {0}",querypiccounter);
 #endif

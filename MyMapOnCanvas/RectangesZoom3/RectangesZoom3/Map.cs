@@ -40,6 +40,7 @@ namespace RectangesZoom3
         private byte zoomFactor = 2;
         protected override void OnZoom(Point mouse, byte currentZoom, byte newZoom)
         {
+            //вьюпорт решает как сместить область!
             Debug.Print("newzoom: {0}",newZoom);
             var scaleMultiplier = Math.Pow(zoomFactor, newZoom - currentZoom);
             var newtopleft = viewPort.TopLeft + (mouse - viewPort.TopLeft) * (1 - scaleMultiplier);
@@ -47,10 +48,10 @@ namespace RectangesZoom3
             var newzoomRect = new Rect(newtopleft,new Size(viewPort.Size.Width*scaleMultiplier,viewPort.Size.Height*scaleMultiplier)) ;
             var canvasrect = new Rect(0, 0, ActualWidth, ActualHeight);
 
-            var x2 = Math.Min(canvasrect.Right, newzoomRect.Right);
-            var y2 = Math.Min(canvasrect.Bottom, newzoomRect.Bottom);
+            var x2 =canvasrect.Right;
+            var y2 =canvasrect.Bottom;
             
-            var newrect = new Rect(newzoomRect.TopLeft.X,newzoomRect.TopLeft.Y,x2,y2);
+            var newrect = new Rect(newzoomRect.TopLeft,newzoomRect.Size);
             var isvalid = Validate(newrect, newZoom);
             Debug.Print("valid: {0}", isvalid);
             ViewPortChange(viewPort, newrect, currentZoom, newZoom);
