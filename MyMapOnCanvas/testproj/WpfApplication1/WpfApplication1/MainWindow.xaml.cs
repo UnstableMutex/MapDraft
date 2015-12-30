@@ -27,14 +27,12 @@ namespace WpfApplication1
 
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-           //     byte zoomFactor = 2;
-           //var mouse = new Point(50,50);
-           //Rect viewPort=new Rect(0,0,100,100);
+               byte zoomFactor = 2;
+           var mouse = new Point(50,50);
+           Rect viewPort=new Rect(10,10,100,100);
 
-           // var offset =-1* (mouse - viewPort.TopLeft)*zoomFactor;
-            var l = Math.Log(8, 2);
-            // var newTopleft= 
-            // * zoomFactor;
+            var percent = mouse-viewPort.TopLeft;
+            var p1 = percent*2;
         }
     }
 }
