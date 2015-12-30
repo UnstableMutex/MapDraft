@@ -24,5 +24,15 @@ namespace RectangesZoom3
         {
             InitializeComponent();
         }
+
+        private void Startrgn(object sender, RoutedEventArgs e)
+        {
+            map.StartRegion();
+        }
+
+        private void Endrgn(object sender, RoutedEventArgs e)
+        {
+            map.EndRegion();
+        }
     }
 }
