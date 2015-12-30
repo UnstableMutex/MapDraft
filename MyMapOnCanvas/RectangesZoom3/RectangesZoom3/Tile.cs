@@ -8,7 +8,7 @@ using System.Windows.Controls;
 
 namespace RectangesZoom3
 {
-    class Tile : Image
+    class Tile :Grid
     {
 
         private readonly TilePosition _tilePosition;
@@ -30,7 +30,9 @@ namespace RectangesZoom3
             {
                 var imagesource = await MyImageDownloaderAsync.GetImage((byte)_zoom, _tilePosition.X, _tilePosition.Y);
 
-                this.Source = imagesource;
+                //this.Source = imagesource;
+                this.Children.Add(new Image() {Source = imagesource});
+                this.Children.Add(new TextBlock() {Text = string.Format("{0} {1}", _tilePosition.X, _tilePosition.Y)});
                 Debug.Print("SETSOURCE");
             }
             catch (FileNotFoundException)
@@ -48,6 +50,11 @@ namespace RectangesZoom3
         public int X
         {
             get { return _tilePosition.X; }
+        }
+
+        public void SetImage()
+        {
+            Upload();
         }
     }
 }

@@ -40,6 +40,7 @@ namespace RectangesZoom3
         private byte zoomFactor = 2;
         protected override void OnZoom(Point mouse, byte currentZoom, byte newZoom)
         {
+            Debug.Print("newzoom: {0}",newZoom);
             var scaleMultiplier = Math.Pow(zoomFactor, newZoom - currentZoom);
             var newtopleft = viewPort.TopLeft + (mouse - viewPort.TopLeft) * (1 - scaleMultiplier);
 

@@ -1,7 +1,9 @@
 using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace RectangesZoom3
 {
@@ -24,12 +26,15 @@ namespace RectangesZoom3
 
         ImageSource GetImage(int x, int y)
         {
-            return MyImageDownloaderAsync.GetImageS(_zoom, x, y);
+            var image = MyImageDownloaderAsync.GetImageS(_zoom, x, y);
+        //  image=  BitmapDrawNums.DrawNums((BitmapSource)image, x, y, Zoom);
+            return image;
         }
 
         ImageSource GetImage(TilePosition tp)
         {
-            return MyImageDownloaderAsync.GetImageS(_zoom, tp.X, tp.Y);
+            Debug.Print("query image {0} {1}",tp.X,tp.Y);
+            return GetImage(tp.X, tp.Y);
         }
 
         public void OnViewPortChange(Rect oldvp, Rect newvp, byte currentZoom, byte newZoom)
@@ -56,7 +61,7 @@ namespace RectangesZoom3
 
         public void Click(Point mouse)
         {
-            
+
         }
 
         public void AddInitial()
@@ -78,7 +83,9 @@ namespace RectangesZoom3
             int currentYIndex = 0;
             var currentCoordX = coordX;
             var currentCoordY = coordY;
-
+#if DEBUG
+            int querypiccounter = 0;
+#endif
             do
             {
                 do
@@ -89,16 +96,17 @@ namespace RectangesZoom3
                     Tile tile = new Tile(tp, Zoom);
                     try
                     {
-  var image = GetImage(tp);
-
-                    tile.Source = image;
+                        //var image = GetImage(tp);
+                        Debug.Print("load image {0} {1}", tp.X, tp.Y);
+                        querypiccounter++;
+                        tile.SetImage();
                     }
                     catch (TileIndexOutOfRangeException)
                     {
-                        
-                        
+
+
                     }
-                  
+
                     _map.Children.Add(tile);
                     Canvas.SetLeft(tile, currentCoordX);
                     Canvas.SetTop(tile, currentCoordY);
@@ -117,10 +125,15 @@ namespace RectangesZoom3
                 currentXIndex = 0;
                 var contY = MyImageDownloaderAsync.IsIndexCorrect(currentYIndex, Zoom);
                 if (!contY)
-                { break;
-                    
+                {
+                    break;
+
                 }
             } while (currentCoordY <= newvp.Height);
+#if DEBUG
+        Debug.Print("qpc {0}",querypiccounter);
+#endif
         }
+
     }
 }
