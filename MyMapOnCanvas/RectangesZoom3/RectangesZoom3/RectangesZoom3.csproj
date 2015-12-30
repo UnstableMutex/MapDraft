@@ -59,6 +59,8 @@
     <Compile Include="MyImageDownloaderAsync.cs" />
     <Compile Include="Tile.cs" />
     <Compile Include="TilePosition.cs" />
+    <Compile Include="ZoomItems.cs" />
+    <Compile Include="ZoomItemsCollection.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -28,6 +26,7 @@ namespace RectangesZoom3
             {
                 zoomLayers.Add(item.Zoom, item);
             }
+            zoomLayers.Show();
         }
 
 
@@ -49,11 +48,7 @@ namespace RectangesZoom3
 
             viewPort = newrect;
             zoomLayers.Zoom = newZoom;
-            //var offsetForZoom = -1 * (mouse - viewPort.TopLeft) * zoomFactor;
-            //var old = viewPort;
-            //viewPort.Scale(scaleMultiplier, scaleMultiplier);
-            //viewPort.Offset(offsetForZoom);
-            //ViewPortChange(old, viewPort);
+
         }
 
         private void ViewPortChange(Rect oldvp, Rect newvp, byte currentZoom, byte newZoom)
@@ -76,129 +71,6 @@ namespace RectangesZoom3
             var old = viewPort;
             viewPort.Offset(v);
             ViewPortChange(old, viewPort,zoomLayers.Zoom,zoomLayers.Zoom);
-        }
-    }
-
-    class ZoomItemsCollection : SortedList<byte, ZoomItems>
-    {
-        private byte _initialZoom;
-
-        public ZoomItemsCollection(byte initialZoom)
-        {
-            _initialZoom = initialZoom;
-            var multi = Math.Pow(2, initialZoom);
-            //  viewPort = new Rect(0, 0, Constants.TileSize * multi, Constants.TileSize * multi);
-
-        }
-
-        public byte Zoom
-        {
-            get { return _initialZoom; }
-            set { _initialZoom = value; }
-        }
-
-
-        public void ViewPortChange(Rect oldvp, Rect newvp, byte currentZoom, byte newZoom)
-        {
-            foreach (var item in this)
-            {
-                item.Value.OnViewPortChange(oldvp, newvp, currentZoom, newZoom);
-            }
-        }
-    }
-
-
-    class ZoomItems
-    {
-        private readonly byte _zoom;
-        private readonly Map _map;
-        private bool _activeLayer;
-        public ZoomItems(byte zoom, Map map)
-        {
-            _zoom = zoom;
-            _map = map;
-        }
-
-
-        public void OnViewPortChange(Rect oldvp, Rect newvp)
-        {
-
-
-
-
-
-        }
-        public byte Zoom
-        {
-            get { return _zoom; }
-        }
-
-        ImageSource GetImage(int x, int y)
-        {
-            return MyImageDownloaderAsync.GetImageS(_zoom, x, y);
-        }
-
-        ImageSource GetImage(TilePosition tp)
-        {
-            return MyImageDownloaderAsync.GetImageS(_zoom, tp.X, tp.Y);
-        }
-
-        internal void OnViewPortChange(Rect oldvp, Rect newvp, byte currentZoom, byte newZoom)
-        {
-            //var oldmulti = oldvp.Width/Constants.TileSize;
-            //var oldzoom = Math.Log(oldmulti,2) - 1;
-            //var newZoom = Math.Log(oldvp.Height/Constants.TileSize, 2) - 1;
-
-            if (Zoom == currentZoom)
-            {
-                //если зум усттарел надо убрать тайлы
-                foreach (var tile in _map.Tiles)
-                {
-                    _map.Children.Remove(tile);
-                }
-
-            }
-            if (Zoom == newZoom)
-            {
-                //если зум новый то добавить тайлы
-                double vpX = newvp.X;
-
-
-                var firstTileXIndex = (int)Math.Ceiling(vpX / Constants.TileSize);
-                var firstTileYIndex = (int)Math.Ceiling(newvp.Y / Constants.TileSize);
-                var coordX = vpX - firstTileXIndex * Constants.TileSize;
-                var coordY = newvp.Y - firstTileYIndex * Constants.TileSize;
-
-                // var image = GetImage(firstTileXIndex, firstTileYIndex);
-                int currentXIndex = 0;
-                int currentYIndex = 0;
-                var currentCoordX = coordX;
-                var currentCoordY = coordY;
-                while (currentCoordY + Constants.TileSize <= newvp.Height)
-                {
-                    while (currentCoordX + Constants.TileSize <= newvp.Width)
-                    {
-                        var tp = new TilePosition();
-                        tp.X = currentXIndex + firstTileXIndex;
-                        tp.Y = currentYIndex + firstTileYIndex;
-                        var image = GetImage(tp);
-                        Tile tile = new Tile(tp, Zoom);
-                        tile.Source = image;
-                        _map.Children.Add(tile);
-                        Canvas.SetLeft(tile,currentCoordX);
-                        Canvas.SetTop(tile,currentCoordY);
-                        currentCoordX += Constants.TileSize;
-                        currentXIndex++;
-                    }
-                    currentCoordY += Constants.TileSize;
-                    currentYIndex++;
-                }
-
-
-
-
-            }
-
         }
     }
 }
