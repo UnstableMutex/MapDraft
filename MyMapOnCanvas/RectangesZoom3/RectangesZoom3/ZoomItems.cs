@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-
+using System.Linq;
 namespace RectangesZoom3
 {
     class ZoomItems : IZoomItems
@@ -25,30 +25,6 @@ namespace RectangesZoom3
             get { return _zoom; }
         }
 
- //       ImageSource GetImage(int x, int y)
- //       {
- //           var image = MyImageDownloaderAsync.GetImageS(_zoom, x, y);
- //       //  image=  BitmapDrawNums.DrawNums((BitmapSource)image, x, y, Zoom);
- //           return image;
- //       }
-
- //       Dictionary<TilePosition,ImageSource> imageSources = new Dictionary<TilePosition, ImageSource>();
-            
-            
- //           ImageSource GetImage(TilePosition tp)
- //       {
-
- //               if (!imageSources.ContainsKey(tp))
- //               {
- //                   imageSources.Add(tp,GetImage(tp.X, tp.Y));
- //Debug.Print("query image {0} {1}",tp.X,tp.Y);
- //               }
- //               return imageSources[tp];
-
-
-
- //       }
-
         public void OnViewPortChange(Rect oldvp, Rect newvp, byte currentZoom, byte newZoom)
         {
             //var oldmulti = oldvp.Width/Constants.TileSize;
@@ -58,7 +34,8 @@ namespace RectangesZoom3
             if (Zoom == currentZoom)
             {
                 //если зум усттарел надо убрать тайлы
-                foreach (var tile in _map.Tiles)
+                var tilestoremove = _map.Tiles.Where(t => t.Zoom == Zoom).ToList();
+                foreach (var tile in tilestoremove)
                 {
                     _map.Children.Remove(tile);
                 }

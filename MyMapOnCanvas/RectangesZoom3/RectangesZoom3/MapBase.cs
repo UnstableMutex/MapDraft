@@ -49,6 +49,7 @@ namespace RectangesZoom3
         /// <param name="e">The MouseButtonEventArgs that contains the event data.</param>
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
+            Debug.Print("mdown");
             base.OnMouseLeftButtonDown(e);
             this.Focus(); // Make sure we get the keyboard
             if (this.CaptureMouse())
@@ -64,9 +65,9 @@ namespace RectangesZoom3
         /// <param name="e">The MouseButtonEventArgs that contains the event data.</param>
         protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
-          
-            
-          
+
+            Debug.Print("mup");
+
             base.OnMouseLeftButtonUp(e);
             this.ReleaseMouseCapture();
             _mouseCaptured = false;

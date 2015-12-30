@@ -51,6 +51,10 @@ namespace RectangesZoom3
         {
             get { return _tid.Pos.X; }
         }
+        public byte Zoom
+        {
+            get { return _tid.Zoom; }
+        }
 
         public void SetImage()
         {
