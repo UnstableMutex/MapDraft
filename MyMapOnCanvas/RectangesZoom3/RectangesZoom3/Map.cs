@@ -27,10 +27,10 @@ namespace RectangesZoom3
             }
         }
 
-        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
-        {
-            zoomLayers.Click(e.GetPosition(this));
-        }
+        //protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
+        //{
+        //    zoomLayers.Click(e.GetPosition(this));
+        //}
 
 
         private Rect viewPort = Rect.Empty;
@@ -61,7 +61,7 @@ namespace RectangesZoom3
 
         private void ViewPortChange(Rect oldvp, Rect newvp, byte currentZoom, byte newZoom)
         {
-            zoomLayers.ViewPortChange(oldvp, newvp, currentZoom, newZoom);
+            zoomLayers.OnViewPortChange(oldvp, newvp, currentZoom, newZoom);
         }
 
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
