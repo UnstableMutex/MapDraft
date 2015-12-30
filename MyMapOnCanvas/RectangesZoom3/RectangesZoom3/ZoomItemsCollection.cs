@@ -4,7 +4,7 @@ using System.Windows;
 
 namespace RectangesZoom3
 {
-    class ZoomItemsCollection : SortedList<byte, ZoomItems>
+    class ZoomItemsCollection : SortedList<byte, ZoomItems>,IZoomItems
     {
         private byte _initialZoom;
 
@@ -16,6 +16,14 @@ namespace RectangesZoom3
 
         }
 
+        public void Click(Point mouse)
+        {
+            foreach (var item in this)
+            {
+                item.Value.Click(mouse);
+            }
+        }
+
         public byte Zoom
         {
             get { return _initialZoom; }
@@ -23,7 +31,7 @@ namespace RectangesZoom3
         }
 
 
-        public void ViewPortChange(Rect oldvp, Rect newvp, byte currentZoom, byte newZoom)
+        public void OnViewPortChange(Rect oldvp, Rect newvp, byte currentZoom, byte newZoom)
         {
             foreach (var item in this)
             {

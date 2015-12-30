@@ -54,6 +54,11 @@ namespace RectangesZoom3
 
         }
 
+        public void Click(Point mouse)
+        {
+            
+        }
+
         public void AddInitial()
         {
             var rect = new Rect(0, 0, _map.ActualWidth, _map.ActualHeight);
