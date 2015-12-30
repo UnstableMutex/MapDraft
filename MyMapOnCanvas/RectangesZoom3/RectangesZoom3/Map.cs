@@ -95,10 +95,6 @@ namespace RectangesZoom3
                 newvp.Size = sizeInfo.NewSize;
 
             }
-           Debug.Print("valid: {0}",valid);
-          
-          
-           
             ViewPortChange(oldvp, newvp, zoomLayers.Zoom, zoomLayers.Zoom);
             viewPort = newvp;     
            
