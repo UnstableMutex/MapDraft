@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -20,31 +21,16 @@ namespace RectangesZoom3
         {
             var arr = Enumerable.Range(0, 15).Select(x => new ZoomItems((byte)x, this)).OrderBy(x => x.Zoom).ToArray();
             zoomLayers = new ZoomItemsCollection(currentZoom);
-
-
-
             foreach (var item in arr)
             {
                 zoomLayers.Add(item.Zoom, item);
             }
-
-
         }
 
-        //public override void EndInit()
-        //{
-
-        //}
-
-
-        //protected override void OnInitialized(EventArgs e)
-        //{
-        //    base.OnInitialized(e);
-
-        //    viewPort = new Rect(0, 0, ActualWidth, ActualHeight);
-        //    zoomLayers.Show();
-        //}
-
+        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
+        {
+            zoomLayers.Click(e.GetPosition(this));
+        }
 
 
         private Rect viewPort = Rect.Empty;
@@ -64,8 +50,8 @@ namespace RectangesZoom3
             var y2 = Math.Min(canvasrect.Right, newzoomRect.Right);
 
             var newrect = new Rect(newzoomRect.TopLeft, new Point(x2, y2));
-            var isvalid = Validate(newrect,newZoom);
-            Debug.Print("valid: {0}",isvalid);
+            var isvalid = Validate(newrect, newZoom);
+            Debug.Print("valid: {0}", isvalid);
             ViewPortChange(viewPort, newrect, currentZoom, newZoom);
 
             viewPort = newrect;
@@ -89,20 +75,20 @@ namespace RectangesZoom3
 
             var newvp = new Rect(oldvp.TopLeft, sizeInfo.NewSize);
 
-            var valid = Validate(newvp,zoomLayers.Zoom);
+            var valid = Validate(newvp, zoomLayers.Zoom);
             if (!valid)
             {
-                var vector = (Point) sizeInfo.NewSize - (Point) sizeInfo.PreviousSize;
+                var vector = (Point)sizeInfo.NewSize - (Point)sizeInfo.PreviousSize;
                 newvp = oldvp;
                 newvp.Offset(vector);
                 newvp.Size = sizeInfo.NewSize;
 
             }
             ViewPortChange(oldvp, newvp, zoomLayers.Zoom, zoomLayers.Zoom);
-            viewPort = newvp;     
-           
+            viewPort = newvp;
 
-          
+
+
 
         }
 
@@ -112,7 +98,7 @@ namespace RectangesZoom3
             var old = viewPort;
             var check = viewPort;
             check.Offset(v);
-            var isvalid = Validate(check,zoomLayers.Zoom);
+            var isvalid = Validate(check, zoomLayers.Zoom);
             if (!isvalid)
                 return;
 
