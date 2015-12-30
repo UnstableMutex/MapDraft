@@ -21,13 +21,13 @@ namespace RectangesZoom3
             var arr = Enumerable.Range(0, 15).Select(x => new ZoomItems((byte)x, this)).OrderBy(x => x.Zoom).ToArray();
             zoomLayers = new ZoomItemsCollection(2);
 
-         
+
 
             foreach (var item in arr)
             {
                 zoomLayers.Add(item.Zoom, item);
             }
-          
+
         }
 
         //public override void EndInit()
@@ -43,7 +43,7 @@ namespace RectangesZoom3
         //    viewPort = new Rect(0, 0, ActualWidth, ActualHeight);
         //    zoomLayers.Show();
         //}
-        
+
 
 
         private Rect viewPort = Rect.Empty;
@@ -76,12 +76,12 @@ namespace RectangesZoom3
         {
             if (viewPort.IsEmpty)
             {
-                viewPort = new Rect(0,0,ActualWidth,ActualHeight);
+                viewPort = new Rect(0, 0, ActualWidth, ActualHeight);
             }
             var oldvp = viewPort;
             var newvp = new Rect(oldvp.TopLeft, sizeInfo.NewSize);
             oldvp.Transform(new Matrix());
-            ViewPortChange(oldvp, newvp,zoomLayers.Zoom,zoomLayers.Zoom);
+            ViewPortChange(oldvp, newvp, zoomLayers.Zoom, zoomLayers.Zoom);
 
         }
 
@@ -96,13 +96,16 @@ namespace RectangesZoom3
                 return;
 
             viewPort.Offset(v);
-            ViewPortChange(old, viewPort,zoomLayers.Zoom,zoomLayers.Zoom);
+            ViewPortChange(old, viewPort, zoomLayers.Zoom, zoomLayers.Zoom);
         }
 
         private bool Validate(Rect check)
         {
             var isnotvalid = (check.X > 0) | check.Y > 0;
-           Debug.Print("checkrect:{0}",check);
+            Debug.Print("checkrect: {0}", check);
+            Debug.Print(check.BottomRight.ToString());
+            isnotvalid |= check.BottomRight.X < 0;// | check.BottomRight.Y < 0;
+            isnotvalid |= check.Size.Height - check.Y >= 1024;//хз почему
             return !(isnotvalid);
         }
     }
