@@ -86,10 +86,19 @@ namespace RectangesZoom3
                     var tp = new TilePosition();
                     tp.X = currentXIndex - firstTileXIndex;
                     tp.Y = currentYIndex - firstTileYIndex;
-
-                    var image = GetImage(tp);
                     Tile tile = new Tile(tp, Zoom);
+                    try
+                    {
+  var image = GetImage(tp);
+
                     tile.Source = image;
+                    }
+                    catch (TileIndexOutOfRangeException)
+                    {
+                        
+                        
+                    }
+                  
                     _map.Children.Add(tile);
                     Canvas.SetLeft(tile, currentCoordX);
                     Canvas.SetTop(tile, currentCoordY);

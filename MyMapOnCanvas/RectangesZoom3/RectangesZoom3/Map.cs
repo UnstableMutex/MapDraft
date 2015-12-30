@@ -43,8 +43,8 @@ namespace RectangesZoom3
             var scaleMultiplier = Math.Pow(zoomFactor, newZoom - currentZoom);
             var newtopleft = viewPort.TopLeft + (mouse - viewPort.TopLeft) * (1 - scaleMultiplier);
 
-            var newzoomRect = new Rect(newtopleft, viewPort.Size);
-            newzoomRect.Scale(scaleMultiplier, scaleMultiplier);
+            var newzoomRect = new Rect(newtopleft,new Size(viewPort.Size.Width*scaleMultiplier,viewPort.Size.Height*scaleMultiplier)) ;
+          
 
 
             var canvasrect = new Rect(0, 0, ActualWidth, ActualHeight);
@@ -53,6 +53,13 @@ namespace RectangesZoom3
             var y2 = Math.Min(canvasrect.Right, newzoomRect.Right);
 
             var newrect = new Rect(newzoomRect.TopLeft, new Point(x2, y2));
+
+            {
+                //check mouse position:
+           var olddeltax=     mouse.X - viewPort.Left;
+                var newdeltax = mouse.X - newrect.X;
+
+            }
             var isvalid = Validate(newrect, newZoom);
             Debug.Print("valid: {0}", isvalid);
             ViewPortChange(viewPort, newrect, currentZoom, newZoom);
