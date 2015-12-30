@@ -2,12 +2,41 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace RectangesZoom3
 {
+    [Serializable]
+    public class TileIndexOutOfRangeException : Exception
+    {
+        //
+        // For guidelines regarding the creation of new exception types, see
+        //    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/cpgenref/html/cpconerrorraisinghandlingguidelines.asp
+        // and
+        //    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dncscol/html/csharp07192001.asp
+        //
+
+        public TileIndexOutOfRangeException()
+        {
+        }
+
+        public TileIndexOutOfRangeException(string message) : base(message)
+        {
+        }
+
+        public TileIndexOutOfRangeException(string message, Exception inner) : base(message, inner)
+        {
+        }
+
+        protected TileIndexOutOfRangeException(
+            SerializationInfo info,
+            StreamingContext context) : base(info, context)
+        {
+        }
+    }
     static class MyImageDownloaderAsync
     {
         static MyImageDownloaderAsync()
@@ -15,6 +44,7 @@ namespace RectangesZoom3
             CacheFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "MapCache");
         }
 
+    
         private static readonly string CacheFolder;
         const string urlTemplate = @"http://tile.openstreetmap.org/{0}/{1}/{2}.png";
         public static async Task<ImageSource> GetImage(byte zoom, int x, int y)
@@ -156,12 +186,23 @@ namespace RectangesZoom3
                 return false;
             }
         }
+
+        public static bool IsIndexCorrect(int index, byte zoom)
+        {
+                 var max = Math.Pow(2, zoom);
+            return !(index > max - 1);
+            //if (x > max - 1 | y > max - 1)
+            //{   
+        }
         public static ImageSource GetImageS(byte zoom, int x, int y)
         {
+
+
+
             var max = Math.Pow(2, zoom);
-            if (x > max - 1 | y > max - 1)
+            if (!(IsIndexCorrect(x, zoom) & IsIndexCorrect(y, zoom)))
             {
-                throw new FileNotFoundException();
+                throw new TileIndexOutOfRangeException();
             }
 
 

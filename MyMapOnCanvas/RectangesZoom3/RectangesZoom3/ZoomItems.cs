@@ -64,32 +64,34 @@ namespace RectangesZoom3
 
         public void AddInitial()
         {
-            var rect=new Rect(0,0,_map.ActualWidth,_map.ActualHeight);
+            var rect = new Rect(0, 0, _map.ActualWidth, _map.ActualHeight);
             AddTiles(rect);
         }
         private void AddTiles(Rect newvp)
         {
-//если зум новый то добавить тайлы
+            //если зум новый то добавить тайлы
             double vpX = newvp.X;
 
 
-            var firstTileXIndex = (int) Math.Ceiling(vpX/Constants.TileSize);
-            var firstTileYIndex = (int) Math.Ceiling(newvp.Y/Constants.TileSize);
-            var coordX = vpX - firstTileXIndex*Constants.TileSize;
-            var coordY = newvp.Y - firstTileYIndex*Constants.TileSize;
+            var firstTileXIndex = (int)Math.Ceiling(vpX / Constants.TileSize);
+            var firstTileYIndex = (int)Math.Ceiling(newvp.Y / Constants.TileSize);
+            var coordX = vpX - firstTileXIndex * Constants.TileSize;
+            var coordY = newvp.Y - firstTileYIndex * Constants.TileSize;
 
             // var image = GetImage(firstTileXIndex, firstTileYIndex);
             int currentXIndex = 0;
             int currentYIndex = 0;
             var currentCoordX = coordX;
             var currentCoordY = coordY;
-            while (currentCoordY + Constants.TileSize <= newvp.Height)
+
+            do
             {
-                while (currentCoordX + Constants.TileSize <= newvp.Width)
+                do
                 {
                     var tp = new TilePosition();
                     tp.X = currentXIndex + firstTileXIndex;
                     tp.Y = currentYIndex + firstTileYIndex;
+
                     var image = GetImage(tp);
                     Tile tile = new Tile(tp, Zoom);
                     tile.Source = image;
@@ -98,10 +100,23 @@ namespace RectangesZoom3
                     Canvas.SetTop(tile, currentCoordY);
                     currentCoordX += Constants.TileSize;
                     currentXIndex++;
-                }
+                    var contX = MyImageDownloaderAsync.IsIndexCorrect(currentXIndex, Zoom);
+                    if (!contX)
+                    {
+                        break;
+                    }
+
+                } while (currentCoordX <= newvp.Width);
                 currentCoordY += Constants.TileSize;
                 currentYIndex++;
-            }
+                currentCoordX = coordX;
+                currentXIndex = 0;
+                var contY = MyImageDownloaderAsync.IsIndexCorrect(currentYIndex, Zoom);
+                if (!contY)
+                { break;
+                    
+                }
+            } while (currentCoordY <= newvp.Height);
         }
     }
 }
