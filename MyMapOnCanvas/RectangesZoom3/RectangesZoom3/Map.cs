@@ -51,12 +51,6 @@ namespace RectangesZoom3
         protected override void OnZoom(Point mouse, byte currentZoom, byte newZoom)
         {
             var scaleMultiplier = Math.Pow(zoomFactor, newZoom - currentZoom);
-
-            //var newX = mouse.X * (1 - scaleMultiplier);
-            //newX = viewPort.X + (mouse.X - viewPort.X) * (1 - scaleMultiplier);
-            //var newY = mouse.Y * (1 - scaleMultiplier);
-            //newY = viewPort.Y + (mouse.Y - viewPort.Y) * (1 - scaleMultiplier);
-
             var newtopleft = viewPort.TopLeft + (mouse - viewPort.TopLeft) * (1 - scaleMultiplier);
 
             var newzoomRect = new Rect(newtopleft, viewPort.Size);
@@ -65,10 +59,10 @@ namespace RectangesZoom3
 
             var canvasrect = new Rect(0, 0, ActualWidth, ActualHeight);
 
-            var maxWidth = Math.Min(canvasrect.Width, newzoomRect.Width + newzoomRect.X);
-            var maxHeight = Math.Min(canvasrect.Height, newzoomRect.Height + newzoomRect.Y);
-            var newrect = new Rect(newzoomRect.X, newzoomRect.Y, maxWidth, maxHeight);
+            var x2 = Math.Min(canvasrect.Right, newzoomRect.Right);
+            var y2 = Math.Min(canvasrect.Right, newzoomRect.Right);
 
+            var newrect = new Rect(newzoomRect.TopLeft, new Point(x2, y2));
             ViewPortChange(viewPort, newrect, currentZoom, newZoom);
 
             viewPort = newrect;
@@ -111,10 +105,9 @@ namespace RectangesZoom3
         private bool Validate(Rect check)
         {
             var isnotvalid = (check.X > 0) | check.Y > 0;
-            Debug.Print("checkrect: {0}", check);
-            Debug.Print(check.BottomRight.ToString());
+
             isnotvalid |= check.BottomRight.X < 0;// | check.BottomRight.Y < 0;
-            isnotvalid |= check.Size.Height - check.Y >= 1024;//хз почему
+            isnotvalid |= check.Size.Height - check.Y >= Constants.TileSize * Math.Pow(2, zoomLayers.Zoom);//хз почему
             return !(isnotvalid);
         }
     }
