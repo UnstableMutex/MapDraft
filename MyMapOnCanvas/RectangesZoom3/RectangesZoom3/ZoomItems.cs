@@ -77,8 +77,6 @@ namespace RectangesZoom3
             var firstTileYIndex = (int)Math.Ceiling(newvp.Y / Constants.TileSize);
             var coordX = vpX - firstTileXIndex * Constants.TileSize;
             var coordY = newvp.Y - firstTileYIndex * Constants.TileSize;
-
-            // var image = GetImage(firstTileXIndex, firstTileYIndex);
             int currentXIndex = 0;
             int currentYIndex = 0;
             var currentCoordX = coordX;

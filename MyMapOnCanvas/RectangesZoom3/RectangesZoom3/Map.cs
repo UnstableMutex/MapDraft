@@ -83,8 +83,9 @@ namespace RectangesZoom3
             }
             var oldvp = viewPort;
             var newvp = new Rect(oldvp.TopLeft, sizeInfo.NewSize);
-            oldvp.Transform(new Matrix());
+   
             ViewPortChange(oldvp, newvp, zoomLayers.Zoom, zoomLayers.Zoom);
+            viewPort = newvp;
 
         }
 
