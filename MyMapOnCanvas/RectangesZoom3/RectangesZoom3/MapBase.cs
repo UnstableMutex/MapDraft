@@ -6,7 +6,7 @@ namespace RectangesZoom3
 {
   abstract  class MapBase : Canvas
     {
-        private byte currentZoom=0;
+        protected byte currentZoom=2;
        
 
         protected abstract void OnZoom(Point mouse,  byte currentZoom, byte newZoom);

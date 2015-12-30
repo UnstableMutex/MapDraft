@@ -19,7 +19,7 @@ namespace RectangesZoom3
         public Map()
         {
             var arr = Enumerable.Range(0, 15).Select(x => new ZoomItems((byte)x, this)).OrderBy(x => x.Zoom).ToArray();
-            zoomLayers = new ZoomItemsCollection(2);
+            zoomLayers = new ZoomItemsCollection(currentZoom);
 
 
 
@@ -51,14 +51,23 @@ namespace RectangesZoom3
         protected override void OnZoom(Point mouse, byte currentZoom, byte newZoom)
         {
             var scaleMultiplier = Math.Pow(zoomFactor, newZoom - currentZoom);
-            var newX = mouse.X * (1 - scaleMultiplier);
-            var newY = mouse.Y * (1 - scaleMultiplier);
-            var newzoomRect = new Rect(newX, newY, viewPort.Width * scaleMultiplier, viewPort.Height * scaleMultiplier);
+
+            //var newX = mouse.X * (1 - scaleMultiplier);
+            //newX = viewPort.X + (mouse.X - viewPort.X) * (1 - scaleMultiplier);
+            //var newY = mouse.Y * (1 - scaleMultiplier);
+            //newY = viewPort.Y + (mouse.Y - viewPort.Y) * (1 - scaleMultiplier);
+
+            var newtopleft = viewPort.TopLeft + (mouse - viewPort.TopLeft) * (1 - scaleMultiplier);
+
+            var newzoomRect = new Rect(newtopleft, viewPort.Size);
+            newzoomRect.Scale(scaleMultiplier, scaleMultiplier);
+
+
             var canvasrect = new Rect(0, 0, ActualWidth, ActualHeight);
 
             var maxWidth = Math.Min(canvasrect.Width, newzoomRect.Width + newzoomRect.X);
             var maxHeight = Math.Min(canvasrect.Height, newzoomRect.Height + newzoomRect.Y);
-            var newrect = new Rect(0 - newzoomRect.X, 0 - newzoomRect.Y, maxWidth, maxHeight);
+            var newrect = new Rect(newzoomRect.X, newzoomRect.Y, maxWidth, maxHeight);
 
             ViewPortChange(viewPort, newrect, currentZoom, newZoom);
 
