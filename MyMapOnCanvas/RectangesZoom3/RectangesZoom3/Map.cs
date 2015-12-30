@@ -48,9 +48,9 @@ namespace RectangesZoom3
             var canvasrect = new Rect(0, 0, ActualWidth, ActualHeight);
 
             var x2 = Math.Min(canvasrect.Right, newzoomRect.Right);
-            var y2 = Math.Min(canvasrect.Right, newzoomRect.Right);
-
-            var newrect = new Rect(newzoomRect.TopLeft, new Point(x2, y2));
+            var y2 = Math.Min(canvasrect.Bottom, newzoomRect.Bottom);
+            
+            var newrect = new Rect(newzoomRect.TopLeft.X,newzoomRect.TopLeft.Y,x2,y2);
             var isvalid = Validate(newrect, newZoom);
             Debug.Print("valid: {0}", isvalid);
             ViewPortChange(viewPort, newrect, currentZoom, newZoom);
