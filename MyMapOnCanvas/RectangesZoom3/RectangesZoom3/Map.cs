@@ -20,17 +20,32 @@ namespace RectangesZoom3
             var arr = Enumerable.Range(0, 15).Select(x => new ZoomItems((byte)x, this)).OrderBy(x => x.Zoom).ToArray();
             zoomLayers = new ZoomItemsCollection(2);
 
-            viewPort = new Rect(0, 0, ActualWidth, ActualHeight);
+         
 
             foreach (var item in arr)
             {
                 zoomLayers.Add(item.Zoom, item);
             }
-            zoomLayers.Show();
+          
         }
 
+        //public override void EndInit()
+        //{
 
-        private Rect viewPort;
+        //}
+
+
+        //protected override void OnInitialized(EventArgs e)
+        //{
+        //    base.OnInitialized(e);
+
+        //    viewPort = new Rect(0, 0, ActualWidth, ActualHeight);
+        //    zoomLayers.Show();
+        //}
+        
+
+
+        private Rect viewPort = Rect.Empty;
         private byte zoomFactor = 2;
         protected override void OnZoom(Point mouse, byte currentZoom, byte newZoom)
         {
@@ -58,6 +73,10 @@ namespace RectangesZoom3
 
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
         {
+            if (viewPort.IsEmpty)
+            {
+                viewPort = new Rect(0,0,ActualWidth,ActualHeight);
+            }
             var oldvp = viewPort;
             var newvp = new Rect(oldvp.TopLeft, sizeInfo.NewSize);
             oldvp.Transform(new Matrix());
