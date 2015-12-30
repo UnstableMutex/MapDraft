@@ -61,11 +61,12 @@
     <Compile Include="IZoomItems.cs" />
     <Compile Include="MapBase.cs" />
     <Compile Include="MyImageDownloaderAsync.cs" />
+    <Compile Include="RegionOverlay.cs" />
     <Compile Include="Tile.cs" />
     <Compile Include="TileID.cs" />
     <Compile Include="TileIndexOutOfRangeException.cs" />
     <Compile Include="TilePosition.cs" />
-    <Compile Include="ZoomItems.cs" />
+    <Compile Include="ZoomOverlay.cs" />
     <Compile Include="ZoomItemsCollection.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

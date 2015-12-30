@@ -17,14 +17,17 @@ namespace RectangesZoom3
             get { return Children.OfType<Tile>().ToArray(); }
         }
         private ZoomItemsCollection zoomLayers;
+        RegionOverlay regionOverlay;
         public Map()
         {
-            var arr = Enumerable.Range(0, 15).Select(x => new ZoomItems((byte)x, this)).OrderBy(x => x.Zoom).ToArray();
+            var arr = Enumerable.Range(0, 15).Select(x => new ZoomOverlay((byte)x, this)).OrderBy(x => x.Zoom).ToArray();
             zoomLayers = new ZoomItemsCollection(currentZoom);
+            regionOverlay = new RegionOverlay(this);
             foreach (var item in arr)
             {
                 zoomLayers.Add(item.Zoom, item);
             }
+            zoomLayers.Add(regionOverlay);
         }
 
      

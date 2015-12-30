@@ -8,15 +8,26 @@ using System.Windows.Media.Imaging;
 using System.Linq;
 namespace RectangesZoom3
 {
-    class ZoomItems : IZoomItems
+     abstract class OverlayBase:IZoomItems
+    {
+        protected readonly Map _map;
+        public OverlayBase(Map map)
+        {
+            _map = map;
+        }
+       
+        public abstract void Click(Point mouse);
+        public abstract void OnViewPortChange(Rect oldvp, Rect newvp, byte currentZoom, byte newZoom);
+    }
+    class ZoomOverlay : OverlayBase
     {
         private readonly byte _zoom;
-        private readonly Map _map;
+      
         private bool _activeLayer;
-        public ZoomItems(byte zoom, Map map)
+        public ZoomOverlay(byte zoom, Map map):base(map)
         {
             _zoom = zoom;
-            _map = map;
+           
         }
 
 
@@ -25,7 +36,7 @@ namespace RectangesZoom3
             get { return _zoom; }
         }
 
-        public void OnViewPortChange(Rect oldvp, Rect newvp, byte currentZoom, byte newZoom)
+        public override void OnViewPortChange(Rect oldvp, Rect newvp, byte currentZoom, byte newZoom)
         {
             //var oldmulti = oldvp.Width/Constants.TileSize;
             //var oldzoom = Math.Log(oldmulti,2) - 1;
@@ -48,7 +59,7 @@ namespace RectangesZoom3
 
         }
 
-        public void Click(Point mouse)
+        public override void Click(Point mouse)
         {
 
         }
