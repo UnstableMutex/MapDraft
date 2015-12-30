@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -57,14 +58,21 @@ namespace RectangesZoom3
             }
         }
 
+
+
         /// <summary>Releases the mouse capture and stops dragging of the map.</summary>
         /// <param name="e">The MouseButtonEventArgs that contains the event data.</param>
         protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
+          
+            
+          
             base.OnMouseLeftButtonUp(e);
             this.ReleaseMouseCapture();
             _mouseCaptured = false;
         }
+
+    
         /// <summary>Drags the map, if the mouse was succesfully captured.</summary>
         /// <param name="e">The MouseEventArgs that contains the event data.</param>
         protected override void OnMouseMove(MouseEventArgs e)
@@ -72,6 +80,7 @@ namespace RectangesZoom3
             base.OnMouseMove(e);
             if (_mouseCaptured)
             {
+             
                 //this.BeginUpdate();
                 Point position = e.GetPosition(null);
                 var vector = position - _previousMouse;

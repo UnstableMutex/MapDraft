@@ -27,10 +27,13 @@ namespace RectangesZoom3
             }
         }
 
-        //protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
-        //{
-        //    zoomLayers.Click(e.GetPosition(this));
-        //}
+     
+
+        protected override void OnMouseRightButtonUp(MouseButtonEventArgs e)
+        {
+            Debug.Print("click");
+            zoomLayers.Click(e.GetPosition(this));
+        }
 
 
         private Rect viewPort = Rect.Empty;
