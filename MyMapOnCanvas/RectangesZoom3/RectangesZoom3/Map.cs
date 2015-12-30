@@ -25,11 +25,19 @@ namespace RectangesZoom3
             regionOverlay = new RegionOverlay(this);
             foreach (var item in arr)
             {
-                zoomLayers.Add(item.Zoom, item);
+                zoomLayers.Add(item);
             }
             zoomLayers.Add(regionOverlay);
         }
 
+        public void StartRegion()
+        {
+            regionOverlay.StartRegion();
+        }
+        public void EndRegion()
+        {
+            regionOverlay.EndRegion();
+        }
      
 
         protected override void OnMouseRightButtonUp(MouseButtonEventArgs e)

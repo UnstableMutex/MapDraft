@@ -23,7 +23,7 @@ namespace RectangesZoom3
     {
         private readonly byte _zoom;
       
-        private bool _activeLayer;
+      
         public ZoomOverlay(byte zoom, Map map):base(map)
         {
             _zoom = zoom;
