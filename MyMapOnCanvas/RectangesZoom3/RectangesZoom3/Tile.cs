@@ -5,56 +5,84 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace RectangesZoom3
 {
-    class Tile :Grid
+    class Tile : Grid
     {
+        private readonly TileID _tid;
 
-        private readonly TilePosition _tilePosition;
-        private readonly ushort _zoom;
 
-        public Tile(TilePosition tilePosition, ushort zoom)
+
+        public Tile(TileID tid)
         {
-            _tilePosition = tilePosition;
-            _zoom = zoom;
+            _tid = tid;
+
             Width = Constants.TileSize;
             Height = Constants.TileSize;
 
         }
 
-        public async Task Upload()
+        public void Upload()
         {
 
             try
             {
-                var imagesource = await MyImageDownloaderAsync.GetImage((byte)_zoom, _tilePosition.X, _tilePosition.Y);
+
+                var imagesource = ImageCache.GetImage(_tid);
 
                 //this.Source = imagesource;
-                this.Children.Add(new Image() {Source = imagesource});
-                this.Children.Add(new TextBlock() {Text = string.Format("{0} {1}", _tilePosition.X, _tilePosition.Y)});
-                Debug.Print("SETSOURCE");
+                this.Children.Add(new Image() { Source = imagesource });
+                this.Children.Add(new TextBlock() { Text = string.Format("{0} {1}", _tid.Pos.X, _tid.Pos.Y) });
+
             }
             catch (FileNotFoundException)
             {
-                Debug.Print("ERR");
+
 
             }
         }
 
         public int Y
         {
-            get { return _tilePosition.Y; }
+            get { return _tid.Pos.Y; }
         }
 
         public int X
         {
-            get { return _tilePosition.X; }
+            get { return _tid.Pos.X; }
         }
 
         public void SetImage()
         {
+
             Upload();
         }
+    }
+
+    struct TileID
+    {
+        public byte Zoom;
+        public TilePosition Pos;
+        public override string ToString()
+        {
+            return Pos.ToString() + "z:" + Zoom;
+        }
+    }
+     static class ImageCache
+    {
+        static  Dictionary<TileID,ImageSource> dic = new Dictionary<TileID, ImageSource>();
+
+        public static ImageSource GetImage(TileID tid)
+        {
+            if (!dic.ContainsKey(tid))
+            {
+                var image = MyImageDownloaderAsync.GetImageS(tid);
+                dic.Add(tid,image);
+            }
+            return dic[tid];
+        }
+
     }
 }

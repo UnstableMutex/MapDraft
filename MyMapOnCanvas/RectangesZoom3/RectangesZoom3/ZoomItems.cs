@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,18 +25,29 @@ namespace RectangesZoom3
             get { return _zoom; }
         }
 
-        ImageSource GetImage(int x, int y)
-        {
-            var image = MyImageDownloaderAsync.GetImageS(_zoom, x, y);
-        //  image=  BitmapDrawNums.DrawNums((BitmapSource)image, x, y, Zoom);
-            return image;
-        }
+ //       ImageSource GetImage(int x, int y)
+ //       {
+ //           var image = MyImageDownloaderAsync.GetImageS(_zoom, x, y);
+ //       //  image=  BitmapDrawNums.DrawNums((BitmapSource)image, x, y, Zoom);
+ //           return image;
+ //       }
 
-        ImageSource GetImage(TilePosition tp)
-        {
-            Debug.Print("query image {0} {1}",tp.X,tp.Y);
-            return GetImage(tp.X, tp.Y);
-        }
+ //       Dictionary<TilePosition,ImageSource> imageSources = new Dictionary<TilePosition, ImageSource>();
+            
+            
+ //           ImageSource GetImage(TilePosition tp)
+ //       {
+
+ //               if (!imageSources.ContainsKey(tp))
+ //               {
+ //                   imageSources.Add(tp,GetImage(tp.X, tp.Y));
+ //Debug.Print("query image {0} {1}",tp.X,tp.Y);
+ //               }
+ //               return imageSources[tp];
+
+
+
+ //       }
 
         public void OnViewPortChange(Rect oldvp, Rect newvp, byte currentZoom, byte newZoom)
         {
@@ -93,11 +105,10 @@ namespace RectangesZoom3
                     var tp = new TilePosition();
                     tp.X = currentXIndex + firstTileXIndex;
                     tp.Y = currentYIndex + firstTileYIndex;
-                    Tile tile = new Tile(tp, Zoom);
+                    TileID tid = new TileID() {Pos = tp,Zoom = Zoom};
+                    Tile tile = new Tile(tid);
                     try
                     {
-                        //var image = GetImage(tp);
-                        Debug.Print("load image {0} {1}", tp.X, tp.Y);
                         querypiccounter++;
                         tile.SetImage();
                     }
@@ -131,7 +142,7 @@ namespace RectangesZoom3
                 }
             } while (currentCoordY <= _map.ActualHeight);
 #if DEBUG
-        Debug.Print("qpc {0}",querypiccounter);
+       // Debug.Print("qpc {0}",querypiccounter);
 #endif
         }
 

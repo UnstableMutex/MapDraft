@@ -51,7 +51,12 @@ namespace RectangesZoom3
     
         private static readonly string CacheFolder;
         const string urlTemplate = @"http://tile.openstreetmap.org/{0}/{1}/{2}.png";
-        public static async Task<ImageSource> GetImage(byte zoom, int x, int y)
+
+        public static async Task<ImageSource> GetImage(TileID tid)
+        {
+            return await GetImage(tid.Zoom, tid.Pos.X, tid.Pos.Y);
+        }
+         static async Task<ImageSource> GetImage(byte zoom, int x, int y)
         {
             var max = Math.Pow(2, zoom);
             if (x > max - 1 | y > max - 1)
@@ -198,19 +203,21 @@ namespace RectangesZoom3
             //if (x > max - 1 | y > max - 1)
             //{   
         }
-        public static ImageSource GetImageS(byte zoom, int x, int y)
+        public static ImageSource GetImageS(TileID tid)
         {
+            Debug.Print("query image {0}",tid);
 
 
-
-            var max = Math.Pow(2, zoom);
-            if (!(IsIndexCorrect(x, zoom) & IsIndexCorrect(y, zoom)))
+            var max = Math.Pow(2, tid.Zoom);
+            if (!(IsIndexCorrect(tid.Pos.X, tid.Zoom) & IsIndexCorrect(tid.Pos.Y, tid.Zoom)))
             {
                 throw new TileIndexOutOfRangeException();
             }
 
 
-
+            var zoom = tid.Zoom;
+            var x = tid.Pos.X;
+            var y = tid.Pos.Y;
             var cachename = Path.Combine(CacheFolder, zoom.ToString(), x.ToString(), y.ToString() + ".png");
             var url = string.Format(urlTemplate, zoom.ToString(), x.ToString(), y.ToString());
 
