@@ -55,11 +55,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BitmapDrawNums.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="ImageCache.cs" />
     <Compile Include="IZoomItems.cs" />
     <Compile Include="MapBase.cs" />
     <Compile Include="MyImageDownloaderAsync.cs" />
     <Compile Include="Tile.cs" />
+    <Compile Include="TileID.cs" />
+    <Compile Include="TileIndexOutOfRangeException.cs" />
     <Compile Include="TilePosition.cs" />
     <Compile Include="ZoomItems.cs" />
     <Compile Include="ZoomItemsCollection.cs" />

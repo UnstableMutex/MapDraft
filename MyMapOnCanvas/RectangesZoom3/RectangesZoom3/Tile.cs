@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
-using System.Windows.Media;
 
 namespace RectangesZoom3
 {
@@ -59,30 +57,5 @@ namespace RectangesZoom3
 
             Upload();
         }
-    }
-
-    struct TileID
-    {
-        public byte Zoom;
-        public TilePosition Pos;
-        public override string ToString()
-        {
-            return Pos.ToString() + "z:" + Zoom;
-        }
-    }
-     static class ImageCache
-    {
-        static  Dictionary<TileID,ImageSource> dic = new Dictionary<TileID, ImageSource>();
-
-        public static ImageSource GetImage(TileID tid)
-        {
-            if (!dic.ContainsKey(tid))
-            {
-                var image = MyImageDownloaderAsync.GetImageS(tid);
-                dic.Add(tid,image);
-            }
-            return dic[tid];
-        }
-
     }
 }
