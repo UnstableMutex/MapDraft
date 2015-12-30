@@ -55,6 +55,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Constants.cs" />
+    <Compile Include="IZoomItems.cs" />
     <Compile Include="MapBase.cs" />
     <Compile Include="MyImageDownloaderAsync.cs" />
     <Compile Include="Tile.cs" />

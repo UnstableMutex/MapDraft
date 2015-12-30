@@ -28,6 +28,7 @@ namespace RectangesZoom3
                 zoomLayers.Add(item.Zoom, item);
             }
 
+
         }
 
         //public override void EndInit()
@@ -63,6 +64,8 @@ namespace RectangesZoom3
             var y2 = Math.Min(canvasrect.Right, newzoomRect.Right);
 
             var newrect = new Rect(newzoomRect.TopLeft, new Point(x2, y2));
+            var isvalid = Validate(newrect,newZoom);
+            Debug.Print("valid: {0}",isvalid);
             ViewPortChange(viewPort, newrect, currentZoom, newZoom);
 
             viewPort = newrect;
@@ -86,7 +89,7 @@ namespace RectangesZoom3
 
             var newvp = new Rect(oldvp.TopLeft, sizeInfo.NewSize);
 
-            var valid = Validate(newvp);
+            var valid = Validate(newvp,zoomLayers.Zoom);
             if (!valid)
             {
                 var vector = (Point) sizeInfo.NewSize - (Point) sizeInfo.PreviousSize;
@@ -109,7 +112,7 @@ namespace RectangesZoom3
             var old = viewPort;
             var check = viewPort;
             check.Offset(v);
-            var isvalid = Validate(check);
+            var isvalid = Validate(check,zoomLayers.Zoom);
             if (!isvalid)
                 return;
 
@@ -117,12 +120,12 @@ namespace RectangesZoom3
             ViewPortChange(old, viewPort, zoomLayers.Zoom, zoomLayers.Zoom);
         }
 
-        private bool Validate(Rect check)
+        private bool Validate(Rect check, int zoom)
         {
             var isnotvalid = (check.X > 0) | check.Y > 0;
 
-            isnotvalid |= check.Size.Width - check.X >= Constants.TileSize * Math.Pow(2, zoomLayers.Zoom);// | check.BottomRight.Y < 0;
-            isnotvalid |= check.Size.Height - check.Y >= Constants.TileSize * Math.Pow(2, zoomLayers.Zoom);//хз почему
+            isnotvalid |= check.Size.Width - check.X >= Constants.TileSize * Math.Pow(2, zoom);// | check.BottomRight.Y < 0;
+            isnotvalid |= check.Size.Height - check.Y >= Constants.TileSize * Math.Pow(2, zoom);//хз почему
             return !(isnotvalid);
         }
     }

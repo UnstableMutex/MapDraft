@@ -5,7 +5,7 @@ using System.Windows.Media;
 
 namespace RectangesZoom3
 {
-    class ZoomItems
+    class ZoomItems : IZoomItems
     {
         private readonly byte _zoom;
         private readonly Map _map;
@@ -17,14 +17,6 @@ namespace RectangesZoom3
         }
 
 
-        public void OnViewPortChange(Rect oldvp, Rect newvp)
-        {
-
-
-
-
-
-        }
         public byte Zoom
         {
             get { return _zoom; }
@@ -40,7 +32,7 @@ namespace RectangesZoom3
             return MyImageDownloaderAsync.GetImageS(_zoom, tp.X, tp.Y);
         }
 
-        internal void OnViewPortChange(Rect oldvp, Rect newvp, byte currentZoom, byte newZoom)
+        public void OnViewPortChange(Rect oldvp, Rect newvp, byte currentZoom, byte newZoom)
         {
             //var oldmulti = oldvp.Width/Constants.TileSize;
             //var oldzoom = Math.Log(oldmulti,2) - 1;
