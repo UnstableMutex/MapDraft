@@ -19,7 +19,7 @@ namespace RectangesZoom3
         public Map()
         {
             var arr =
-                Enumerable.Range(0, 17).Select(x => new ZoomOverlay((byte) x, this)).OrderBy(x => x.Zoom).ToArray();
+                Enumerable.Range(0, 17).Select(x => new ZoomOverlay((byte)x, this)).OrderBy(x => x.Zoom).ToArray();
             zoomLayers = new ZoomItemsCollection(currentZoom);
             regionOverlay = new RegionOverlay(this);
             foreach (var item in arr)
@@ -42,8 +42,8 @@ namespace RectangesZoom3
 
         protected override void OnMouseRightButtonUp(MouseButtonEventArgs e)
         {
-            var loc = MercatorWrapper.GetLocation(e.GetPosition(this), _viewPort,zoomLayers.Zoom);
-            Debug.Print("lat:{0}",loc.Latitude);
+            var loc = MercatorWrapper.GetLocation(e.GetPosition(this), _viewPort, zoomLayers.Zoom);
+            Debug.Print("lat:{0}", loc.Latitude);
             zoomLayers.Click(e.GetPosition(this));
         }
 
@@ -55,10 +55,11 @@ namespace RectangesZoom3
         {
             //вьюпорт решает как сместить область!
             var scaleMultiplier = Math.Pow(zoomFactor, newZoom - currentZoom);
-            var newtopleft = _viewPort.TopLeft + (mouse - _viewPort.TopLeft)*(1 - scaleMultiplier);
+            var newtopleft = _viewPort.TopLeft + (mouse - _viewPort.TopLeft) * (1 - scaleMultiplier);
             var newzoomRect = new Rect(newtopleft,
-                new Size(_viewPort.Size.Width*scaleMultiplier, _viewPort.Size.Height*scaleMultiplier));
+                new Size(_viewPort.Size.Width * scaleMultiplier, _viewPort.Size.Height * scaleMultiplier));
             var newrect = new Rect(newzoomRect.TopLeft, newzoomRect.Size);
+            Validate(ref newrect, newZoom);
             ViewPortChange(_viewPort, newrect, currentZoom, newZoom, mouse);
             _viewPort = newrect;
             zoomLayers.Zoom = newZoom;
@@ -77,10 +78,10 @@ namespace RectangesZoom3
             }
             var oldvp = _viewPort;
             var newvp = new Rect(oldvp.TopLeft, sizeInfo.NewSize);
-            var valid =Validate(newvp, zoomLayers.Zoom);
+            var valid = Validate(ref newvp, zoomLayers.Zoom);
             if (!valid)
             {
-                var vector = (Point) sizeInfo.NewSize - (Point) sizeInfo.PreviousSize;
+                var vector = (Point)sizeInfo.NewSize - (Point)sizeInfo.PreviousSize;
                 newvp = oldvp;
                 newvp.Offset(vector);
                 newvp.Size = sizeInfo.NewSize;
@@ -95,24 +96,79 @@ namespace RectangesZoom3
             var old = _viewPort;
             var check = _viewPort;
             check.Offset(v);
-            var isvalid = Validate(check, zoomLayers.Zoom);
+            var isvalid = ValidateDrag(ref check, zoomLayers.Zoom);
             if (!isvalid)
                 return;
-            _viewPort.Offset(v);
+            _viewPort = check;
             ViewPortChange(old, _viewPort, zoomLayers.Zoom, zoomLayers.Zoom, Mouse.GetPosition(this));
         }
 
-        private bool Validate(Rect check, int zoom)
+        private bool ValidateDrag(ref Rect check, byte zoom)
         {
+            var vpsize = Constants.TileSize * Math.Pow(2, zoom);
+            var isvalid = check.X <= 0;
+            isvalid &= check.Y <= 0;
+            isvalid &= check.X+vpsize >= ActualWidth;
+            isvalid &= check.Y+vpsize >= ActualHeight;
+            return isvalid;
+        }
+
+        private bool Validate(ref Rect check, int zoom)
+       {
+  //          var canvasSize = new Size(ActualWidth, ActualHeight);
+  //          var canvasRect = new Rect(new Point(0, 0), canvasSize);
+  //          var max = Constants.TileSize * Math.Pow(2, zoom);
+
+
+
+
+  //          var isnotvalid = (check.X > 0) | check.Y > 0;//слева сверху не должно быть белых пятен
+
+  //          var widthOver = max < check.Width;//карта меньше чем экран по иксу
+  //          if (widthOver)
+  //          {
+  //              check.X = 0;
+  //          }
+  //          else
+  //          {
+  // isnotvalid |= check.Size.Width - check.X >= max;
+  //          }
+  //          var heightOver = max < check.Height;//карта меньше экрана по игреку
+  //          if (heightOver)
+  //          {
+  //              check.Y = 0;
+  //          }
+  //          else
+  //          {
+  //isnotvalid |= check.Size.Height - check.Y >= max; //хз почему
+  //          }
+
+
+  //          //if (check.Size.Width - check.X >= max)
+  //          //{
+  //          //    //надо сместить вьюпорт по иксу
+
+  //          //}
+
+         
+          
+
+
+
+
+
+
+
+
+
+
+  //          Debug.Print("rect: {0} zoom: {1}", check, zoom);
+  //          Debug.Print("notvalid:{0}", isnotvalid);
+  //          return !(isnotvalid);
+
             return true;
 
-            //var isnotvalid = (check.X > 0) | check.Y > 0;
 
-            //isnotvalid |= check.Size.Width - check.X >= Constants.TileSize*Math.Pow(2, zoom);
-            //isnotvalid |= check.Size.Height - check.Y >= Constants.TileSize*Math.Pow(2, zoom); //хз почему
-            //Debug.Print("rect: {0} zoom: {1}", check, zoom);
-            //Debug.Print("notvalid:{0}",isnotvalid);
-            //return !(isnotvalid);
         }
     }
 }
