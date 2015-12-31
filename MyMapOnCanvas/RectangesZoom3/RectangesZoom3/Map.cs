@@ -16,11 +16,14 @@ namespace RectangesZoom3
         {
             get { return Children.OfType<Tile>().ToArray(); }
         }
+
         private ZoomItemsCollection zoomLayers;
         RegionOverlay regionOverlay;
+
         public Map()
         {
-            var arr = Enumerable.Range(0, 15).Select(x => new ZoomOverlay((byte)x, this)).OrderBy(x => x.Zoom).ToArray();
+            var arr =
+                Enumerable.Range(0, 15).Select(x => new ZoomOverlay((byte) x, this)).OrderBy(x => x.Zoom).ToArray();
             zoomLayers = new ZoomItemsCollection(currentZoom);
             regionOverlay = new RegionOverlay(this);
             foreach (var item in arr)
@@ -34,11 +37,12 @@ namespace RectangesZoom3
         {
             regionOverlay.StartRegion();
         }
+
         public void EndRegion()
         {
             regionOverlay.EndRegion();
         }
-     
+
 
         protected override void OnMouseRightButtonUp(MouseButtonEventArgs e)
         {
@@ -49,60 +53,49 @@ namespace RectangesZoom3
 
         private Rect viewPort = Rect.Empty;
         private byte zoomFactor = 2;
+
         protected override void OnZoom(Point mouse, byte currentZoom, byte newZoom)
         {
             //вьюпорт решает как сместить область!
-            Debug.Print("newzoom: {0}",newZoom);
+            Debug.Print("newzoom: {0}", newZoom);
             var scaleMultiplier = Math.Pow(zoomFactor, newZoom - currentZoom);
-            var newtopleft = viewPort.TopLeft + (mouse - viewPort.TopLeft) * (1 - scaleMultiplier);
-
-            var newzoomRect = new Rect(newtopleft,new Size(viewPort.Size.Width*scaleMultiplier,viewPort.Size.Height*scaleMultiplier)) ;
+            var newtopleft = viewPort.TopLeft + (mouse - viewPort.TopLeft)*(1 - scaleMultiplier);
+            var newzoomRect = new Rect(newtopleft,
+                new Size(viewPort.Size.Width*scaleMultiplier, viewPort.Size.Height*scaleMultiplier));
             var canvasrect = new Rect(0, 0, ActualWidth, ActualHeight);
-
-            var x2 =canvasrect.Right;
-            var y2 =canvasrect.Bottom;
-            
-            var newrect = new Rect(newzoomRect.TopLeft,newzoomRect.Size);
+            var x2 = canvasrect.Right;
+            var y2 = canvasrect.Bottom;
+            var newrect = new Rect(newzoomRect.TopLeft, newzoomRect.Size);
             var isvalid = Validate(newrect, newZoom);
             Debug.Print("valid: {0}", isvalid);
-            ViewPortChange(viewPort, newrect, currentZoom, newZoom,mouse);
-
+            ViewPortChange(viewPort, newrect, currentZoom, newZoom, mouse);
             viewPort = newrect;
             zoomLayers.Zoom = newZoom;
-
         }
 
-        private void ViewPortChange(Rect oldvp, Rect newvp, byte currentZoom, byte newZoom,Point mouse)
+        private void ViewPortChange(Rect oldvp, Rect newvp, byte currentZoom, byte newZoom, Point mouse)
         {
-            zoomLayers.OnViewPortChange(oldvp, newvp, currentZoom, newZoom,mouse);
+            zoomLayers.OnViewPortChange(oldvp, newvp, currentZoom, newZoom, mouse);
         }
 
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
         {
-
             if (viewPort.IsEmpty)
             {
                 viewPort = new Rect(0, 0, ActualWidth, ActualHeight);
             }
             var oldvp = viewPort;
-
             var newvp = new Rect(oldvp.TopLeft, sizeInfo.NewSize);
-
             var valid = Validate(newvp, zoomLayers.Zoom);
             if (!valid)
             {
-                var vector = (Point)sizeInfo.NewSize - (Point)sizeInfo.PreviousSize;
+                var vector = (Point) sizeInfo.NewSize - (Point) sizeInfo.PreviousSize;
                 newvp = oldvp;
                 newvp.Offset(vector);
                 newvp.Size = sizeInfo.NewSize;
-
             }
-            ViewPortChange(oldvp, newvp, zoomLayers.Zoom, zoomLayers.Zoom,Mouse.GetPosition(this));
+            ViewPortChange(oldvp, newvp, zoomLayers.Zoom, zoomLayers.Zoom, Mouse.GetPosition(this));
             viewPort = newvp;
-
-
-
-
         }
 
 
@@ -114,17 +107,16 @@ namespace RectangesZoom3
             var isvalid = Validate(check, zoomLayers.Zoom);
             if (!isvalid)
                 return;
-
             viewPort.Offset(v);
-            ViewPortChange(old, viewPort, zoomLayers.Zoom, zoomLayers.Zoom,Mouse.GetPosition(this));
+            ViewPortChange(old, viewPort, zoomLayers.Zoom, zoomLayers.Zoom, Mouse.GetPosition(this));
         }
 
         private bool Validate(Rect check, int zoom)
         {
             var isnotvalid = (check.X > 0) | check.Y > 0;
-
-            isnotvalid |= check.Size.Width - check.X >= Constants.TileSize * Math.Pow(2, zoom);// | check.BottomRight.Y < 0;
-            isnotvalid |= check.Size.Height - check.Y >= Constants.TileSize * Math.Pow(2, zoom);//хз почему
+            isnotvalid |= check.Size.Width - check.X >= Constants.TileSize*Math.Pow(2, zoom);
+            // | check.BottomRight.Y < 0;
+            isnotvalid |= check.Size.Height - check.Y >= Constants.TileSize*Math.Pow(2, zoom); //хз почему
             return !(isnotvalid);
         }
     }

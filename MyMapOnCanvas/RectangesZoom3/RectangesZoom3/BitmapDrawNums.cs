@@ -17,13 +17,10 @@ namespace RectangesZoom3
             using (var bm = BitmapFromSource(bs))
             using (var g = Graphics.FromImage(bm))
             {
-
                 var s = string.Format("z{0} x{1} y{2}", zoom, x, y);
-                g.DrawString(s, f, b,(float)1,(float)1);
+                g.DrawString(s, f, b, (float) 1, (float) 1);
                 return ConvertBitmap(bm);
             }
-
-
         }
 
 

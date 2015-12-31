@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Linq;
+
 namespace RectangesZoom3
 {
-    class ZoomItemsCollection : List<OverlayBase>,IZoomItems
+    class ZoomItemsCollection : List<OverlayBase>, IZoomItems
     {
         private byte _initialZoom;
 
@@ -13,7 +14,6 @@ namespace RectangesZoom3
             _initialZoom = initialZoom;
             var multi = Math.Pow(2, initialZoom);
             //  viewPort = new Rect(0, 0, Constants.TileSize * multi, Constants.TileSize * multi);
-
         }
 
         public void Click(Point mouse)
@@ -35,14 +35,14 @@ namespace RectangesZoom3
         {
             foreach (var item in this)
             {
-                item.OnViewPortChange(oldvp, newvp, currentZoom, newZoom,mouse);
+                item.OnViewPortChange(oldvp, newvp, currentZoom, newZoom, mouse);
             }
         }
 
         public void Show()
         {
             var curzoomlayer = this.OfType<ZoomOverlay>().Single(x => x.Zoom == _initialZoom);
-          curzoomlayer.AddInitial();
+            curzoomlayer.AddInitial();
         }
     }
 }

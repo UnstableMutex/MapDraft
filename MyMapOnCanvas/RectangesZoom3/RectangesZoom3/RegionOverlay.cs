@@ -9,21 +9,18 @@ namespace RectangesZoom3
     {
         public RegionOverlay(Map map) : base(map)
         {
-
         }
 
         public override void Click(Point mouse)
         {
-
             if (active == null)
                 return;
             var thumb = active.AddThumb(mouse, _map);
-
-
-
             _map.Children.Add(thumb);
         }
+
         MyPolygon active;
+
         public void StartRegion()
         {
             active = new MyPolygon(1);
@@ -32,12 +29,12 @@ namespace RectangesZoom3
         public void EndRegion()
         {
             active.MakePolygon(_map);
-
         }
+
         private byte zoomFactor = 2;
+
         public override void OnViewPortChange(Rect oldvp, Rect newvp, byte currentZoom, byte newZoom, Point mouse)
         {
-
             if (active != null)
             {
                 var scaleMultiplier = Math.Pow(zoomFactor, newZoom - currentZoom);
@@ -51,7 +48,6 @@ namespace RectangesZoom3
                     active.Move(vector);
                 }
             }
-
         }
     }
 }

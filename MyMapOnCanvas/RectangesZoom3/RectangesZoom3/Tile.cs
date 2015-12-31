@@ -1,8 +1,4 @@
-﻿using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using System.Windows.Controls;
 
 namespace RectangesZoom3
@@ -12,33 +8,25 @@ namespace RectangesZoom3
         private readonly TileID _tid;
 
 
-
         public Tile(TileID tid)
         {
             _tid = tid;
-
             Width = Constants.TileSize;
             Height = Constants.TileSize;
-
         }
 
         public void Upload()
         {
-
             try
             {
-
                 var imagesource = ImageCache.GetImage(_tid);
 
                 //this.Source = imagesource;
-                this.Children.Add(new Image() { Source = imagesource });
-                this.Children.Add(new TextBlock() { Text = string.Format("{0} {1}", _tid.Pos.X, _tid.Pos.Y) });
-
+                this.Children.Add(new Image() {Source = imagesource});
+                this.Children.Add(new TextBlock() {Text = string.Format("{0} {1}", _tid.Pos.X, _tid.Pos.Y)});
             }
             catch (FileNotFoundException)
             {
-
-
             }
         }
 
@@ -51,6 +39,7 @@ namespace RectangesZoom3
         {
             get { return _tid.Pos.X; }
         }
+
         public byte Zoom
         {
             get { return _tid.Zoom; }
@@ -58,7 +47,6 @@ namespace RectangesZoom3
 
         public void SetImage()
         {
-
             Upload();
         }
     }
