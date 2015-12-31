@@ -146,9 +146,11 @@ namespace RectangesZoom3
             if (Polygon != null)
             {
                 var pol = Polygon;
-                var foundPoint =
-                    pol.Points.Single(
-                        p => Math.Abs(p.X - old.X) < double.Epsilon & Math.Abs(p.Y - old.Y) < double.Epsilon);
+             Func<Point,bool>   filter=       p => Math.Abs(p.X - old.X) < double.Epsilon & Math.Abs(p.Y - old.Y) < double.Epsilon;
+
+                var debuginfo = pol.Points.Where(filter);
+                var foundPoint = pol.Points.Single(filter);
+                      
                 var ind = pol.Points.IndexOf(foundPoint);
                 pol.Points.RemoveAt(ind);
                 pol.Points.Insert(ind, n);
