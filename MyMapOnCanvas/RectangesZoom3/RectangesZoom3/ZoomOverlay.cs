@@ -59,6 +59,18 @@ namespace RectangesZoom3
             var firstTileYIndex = (int) Math.Floor(-1*newvp.Y/Constants.TileSize);
             var coordX = vpX + firstTileXIndex*Constants.TileSize;
             var coordY = newvp.Y + firstTileYIndex*Constants.TileSize;
+
+            while (firstTileYIndex<0)
+            {
+                firstTileYIndex++;
+                coordY += Constants.TileSize;
+            }
+            while (firstTileXIndex<0)
+            {
+                firstTileXIndex++;
+                coordX += Constants.TileSize;
+            }
+
             int currentXIndex = 0;
             int currentYIndex = 0;
             var currentCoordX = coordX;
