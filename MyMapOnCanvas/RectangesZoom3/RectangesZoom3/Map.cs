@@ -95,7 +95,7 @@ namespace RectangesZoom3
             var old = _viewPort;
             var check = _viewPort;
             check.Offset(v);
-            var isvalid = Validate(check, zoomLayers.Zoom);
+            var isvalid = true;// Validate(check, zoomLayers.Zoom);
             if (!isvalid)
                 return;
             _viewPort.Offset(v);
