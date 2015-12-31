@@ -34,5 +34,6 @@ namespace RectangesZoom3
         {
             map.EndRegion();
         }
+      
     }
 }

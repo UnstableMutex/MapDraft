@@ -19,11 +19,11 @@
             <Style x:Key="pPlus" TargetType="Polygon" BasedOn="{StaticResource pbase}">
                 <Setter Property="Fill" Value="Blue"/>
                 <Setter Property="Opacity" Value=".4"/>
-                <Setter Property="Canvas.ZIndex" Value="-4"/>
+                <Setter Property="Canvas.ZIndex" Value="0"/>
             </Style>
             <Style x:Key="pMinus" TargetType="Polygon" BasedOn="{StaticResource pbase}">
                 <Setter Property="Fill" Value="#FFFDC0C0"/>
-                <Setter Property="Canvas.ZIndex" Value="-3"/>
+                <Setter Property="Canvas.ZIndex" Value="0"/>
             </Style>
             <!--<ContextMenu x:Key="cm">
                 <MenuItem Click="DelThumb_Click"
@@ -31,7 +31,7 @@
                               Header="Удалить"/>
             </ContextMenu>-->
             <Style TargetType="Line">
-                <Setter Property="Canvas.ZIndex" Value="-1"/>
+                <Setter Property="Canvas.ZIndex" Value="3"/>
                 <Setter Property="Stroke" Value="Red"/>
                 <Setter Property="StrokeThickness" Value="2"/>
                 <!--<EventSetter Event="MouseLeftButtonDown" Handler="Line_Click"/>
@@ -39,8 +39,8 @@
                 <EventSetter Event="MouseLeave" Handler="Line_MouseLeave"/>-->
             </Style>
             <Style TargetType="Thumb">
-                <!--<EventSetter Event="DragDelta" Handler="ThumbDragDelta"/>-->
-                <!--<Setter Property="ContextMenu" Value="{StaticResource cm}"/>-->
+                    <!--<EventSetter Event="DragDelta" Handler="ThumbDragDelta"/>-->
+                    <!--<Setter Property="ContextMenu" Value="{StaticResource cm}"/>-->
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate>
@@ -48,9 +48,14 @@
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
+                 <Setter Property="Canvas.ZIndex" Value="10"/>
                 <Setter Property="Width" Value="20"/>
                 <Setter Property="Height" Value="20"/>
             </Style>
+              <Style TargetType="rectangesZoom3:Tile">
+                    <Setter Property="Canvas.ZIndex" Value="0"/>
+
+                </Style>          
         </Canvas.Resources>
     </rectangesZoom3:Map>
     </DockPanel>

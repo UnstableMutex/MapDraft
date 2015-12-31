@@ -22,12 +22,22 @@ namespace RectangesZoom3
         {
 
             Thumb t = new Thumb();
+            t.DragDelta += ThumbDragDelta;
             Canvas.SetLeft(t, position.X - size / 2);
             Canvas.SetTop(t, position.Y - size / 2);
 
             var res = canvas.Resources[typeof(Thumb)] as Style;
             t.Style = res;
             return t;
+        }
+        private void ThumbDragDelta(object sender, DragDeltaEventArgs e)
+        {
+
+            var t = sender as Thumb;
+                DragThumb(t, new Point(e.HorizontalChange, e.VerticalChange));
+            
+
+
         }
 
         public Thumb AddThumb(Point position, Canvas canvas)
