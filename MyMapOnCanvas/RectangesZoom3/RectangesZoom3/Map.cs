@@ -77,7 +77,7 @@ namespace RectangesZoom3
             }
             var oldvp = _viewPort;
             var newvp = new Rect(oldvp.TopLeft, sizeInfo.NewSize);
-            var valid = Validate(newvp, zoomLayers.Zoom);
+            var valid =Validate(newvp, zoomLayers.Zoom);
             if (!valid)
             {
                 var vector = (Point) sizeInfo.NewSize - (Point) sizeInfo.PreviousSize;
@@ -95,7 +95,7 @@ namespace RectangesZoom3
             var old = _viewPort;
             var check = _viewPort;
             check.Offset(v);
-            var isvalid = true;// Validate(check, zoomLayers.Zoom);
+            var isvalid = Validate(check, zoomLayers.Zoom);
             if (!isvalid)
                 return;
             _viewPort.Offset(v);
@@ -104,10 +104,15 @@ namespace RectangesZoom3
 
         private bool Validate(Rect check, int zoom)
         {
-            var isnotvalid = (check.X > 0) | check.Y > 0;
-            isnotvalid |= check.Size.Width - check.X >= Constants.TileSize*Math.Pow(2, zoom);
-            isnotvalid |= check.Size.Height - check.Y >= Constants.TileSize*Math.Pow(2, zoom); //хз почему
-            return !(isnotvalid);
+            return true;
+
+            //var isnotvalid = (check.X > 0) | check.Y > 0;
+
+            //isnotvalid |= check.Size.Width - check.X >= Constants.TileSize*Math.Pow(2, zoom);
+            //isnotvalid |= check.Size.Height - check.Y >= Constants.TileSize*Math.Pow(2, zoom); //хз почему
+            //Debug.Print("rect: {0} zoom: {1}", check, zoom);
+            //Debug.Print("notvalid:{0}",isnotvalid);
+            //return !(isnotvalid);
         }
     }
 }
