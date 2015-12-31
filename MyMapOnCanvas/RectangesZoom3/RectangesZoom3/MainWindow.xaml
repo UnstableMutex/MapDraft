@@ -9,7 +9,7 @@
             <Button Click="Startrgn">start</Button>
              <Button Click="Endrgn">end</Button>
         </StackPanel>
-          <rectangesZoom3:Map x:Name="map">
+          <rectangesZoom3:Map ClipToBounds="True" x:Name="map">
         <Canvas.Resources>
             <Style x:Key="pbase" TargetType="Polygon">
 

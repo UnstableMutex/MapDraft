@@ -8,17 +8,6 @@ using System.Windows.Media.Imaging;
 using System.Linq;
 namespace RectangesZoom3
 {
-     abstract class OverlayBase:IZoomItems
-    {
-        protected readonly Map _map;
-        public OverlayBase(Map map)
-        {
-            _map = map;
-        }
-       
-        public abstract void Click(Point mouse);
-        public abstract void OnViewPortChange(Rect oldvp, Rect newvp, byte currentZoom, byte newZoom);
-    }
     class ZoomOverlay : OverlayBase
     {
         private readonly byte _zoom;
