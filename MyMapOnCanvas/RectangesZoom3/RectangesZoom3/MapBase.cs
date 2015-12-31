@@ -15,7 +15,7 @@ namespace RectangesZoom3
 
         protected override void OnMouseWheel(MouseWheelEventArgs e)
         {
-            int newzoom = 0;
+            int newzoom;
             if (e.Delta < 0)
             {
                 newzoom = currentZoom + 1;

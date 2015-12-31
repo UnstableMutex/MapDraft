@@ -12,7 +12,6 @@ namespace RectangesZoom3
         public ZoomItemsCollection(byte initialZoom)
         {
             _initialZoom = initialZoom;
-            var multi = Math.Pow(2, initialZoom);
             //  viewPort = new Rect(0, 0, Constants.TileSize * multi, Constants.TileSize * multi);
         }
 

@@ -110,8 +110,6 @@ namespace RectangesZoom3
             var thumbIndex = thumbList.IndexOf(lastThumb);
             var centerX = (line.X1 + line.X2)/2;
             var centerY = (line.Y1 + line.Y2)/2;
-            var endX2 = line.X2;
-            var endY2 = line.Y2;
             line.X2 = centerX;
             line.Y2 = centerY;
             var newPoint = new Point(centerX, centerY);
@@ -271,8 +269,6 @@ namespace RectangesZoom3
                 {
                     var t = fe as Thumb;
                     var center = t.GetCenter();
-                    var offsetX = -1*(pos.X - center.X);
-                    var offsetY = -1*(pos.Y - center.Y);
                     var x1 = pos.X - zoomFactor*(pos.X - center.X);
                     var y1 = pos.Y - zoomFactor*(pos.Y - center.Y);
                     Vector v = (new Point(x1, y1) - center);

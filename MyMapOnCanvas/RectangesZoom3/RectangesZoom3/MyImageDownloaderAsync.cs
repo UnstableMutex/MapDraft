@@ -156,7 +156,6 @@ namespace RectangesZoom3
         public static ImageSource GetImageS(TileID tid)
         {
             Debug.Print("query image {0}", tid);
-            var max = Math.Pow(2, tid.Zoom);
             if (!(IsIndexCorrect(tid.Pos.X, tid.Zoom) & IsIndexCorrect(tid.Pos.Y, tid.Zoom)))
             {
                 throw new TileIndexOutOfRangeException();
