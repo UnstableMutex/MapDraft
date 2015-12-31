@@ -14,7 +14,19 @@ namespace RectangesZoom3
 {
     class MyPolygon
     {
-     
+
+        public void Move(Vector v)
+        {
+            foreach (var fe in Figures)
+            {
+
+                if (fe is Thumb)
+                {
+                    var t = fe as Thumb;
+                    DragThumb(t, v);
+                }
+            }
+        }
         static MyPolygon()
         {
             

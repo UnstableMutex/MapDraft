@@ -37,11 +37,21 @@ namespace RectangesZoom3
         private byte zoomFactor = 2;
         public override void OnViewPortChange(Rect oldvp, Rect newvp, byte currentZoom, byte newZoom, Point mouse)
         {
+
             if (active != null)
             {
                 var scaleMultiplier = Math.Pow(zoomFactor, newZoom - currentZoom);
-                active.Zoom(scaleMultiplier, mouse);
+                if (scaleMultiplier != 1)
+                {
+                    active.Zoom(scaleMultiplier, mouse);
+                }
+                else
+                {
+                    var vector = newvp.TopLeft - oldvp.TopLeft;
+                    active.Move(vector);
+                }
             }
+
         }
     }
 }
