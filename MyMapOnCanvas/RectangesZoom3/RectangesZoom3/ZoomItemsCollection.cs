@@ -31,11 +31,11 @@ namespace RectangesZoom3
         }
 
 
-        public void OnViewPortChange(Rect oldvp, Rect newvp, byte currentZoom, byte newZoom)
+        public void OnViewPortChange(Rect oldvp, Rect newvp, byte currentZoom, byte newZoom, Point mouse)
         {
             foreach (var item in this)
             {
-                item.OnViewPortChange(oldvp, newvp, currentZoom, newZoom);
+                item.OnViewPortChange(oldvp, newvp, currentZoom, newZoom,mouse);
             }
         }
 

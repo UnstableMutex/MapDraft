@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -33,9 +34,14 @@ namespace RectangesZoom3
             active.MakePolygon(_map);
 
         }
-        public override void OnViewPortChange(Rect oldvp, Rect newvp, byte currentZoom, byte newZoom)
+        private byte zoomFactor = 2;
+        public override void OnViewPortChange(Rect oldvp, Rect newvp, byte currentZoom, byte newZoom, Point mouse)
         {
-
+            if (active != null)
+            {
+                var scaleMultiplier = Math.Pow(zoomFactor, newZoom - currentZoom);
+                active.Zoom(scaleMultiplier, mouse);
+            }
         }
     }
 }

@@ -11,6 +11,6 @@ namespace RectangesZoom3
         }
        
         public abstract void Click(Point mouse);
-        public abstract void OnViewPortChange(Rect oldvp, Rect newvp, byte currentZoom, byte newZoom);
+        public abstract void OnViewPortChange(Rect oldvp, Rect newvp, byte currentZoom, byte newZoom, Point mouse);
     }
 }

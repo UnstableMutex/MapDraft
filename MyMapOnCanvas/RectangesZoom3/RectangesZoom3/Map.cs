@@ -65,16 +65,16 @@ namespace RectangesZoom3
             var newrect = new Rect(newzoomRect.TopLeft,newzoomRect.Size);
             var isvalid = Validate(newrect, newZoom);
             Debug.Print("valid: {0}", isvalid);
-            ViewPortChange(viewPort, newrect, currentZoom, newZoom);
+            ViewPortChange(viewPort, newrect, currentZoom, newZoom,mouse);
 
             viewPort = newrect;
             zoomLayers.Zoom = newZoom;
 
         }
 
-        private void ViewPortChange(Rect oldvp, Rect newvp, byte currentZoom, byte newZoom)
+        private void ViewPortChange(Rect oldvp, Rect newvp, byte currentZoom, byte newZoom,Point mouse)
         {
-            zoomLayers.OnViewPortChange(oldvp, newvp, currentZoom, newZoom);
+            zoomLayers.OnViewPortChange(oldvp, newvp, currentZoom, newZoom,mouse);
         }
 
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
@@ -97,7 +97,7 @@ namespace RectangesZoom3
                 newvp.Size = sizeInfo.NewSize;
 
             }
-            ViewPortChange(oldvp, newvp, zoomLayers.Zoom, zoomLayers.Zoom);
+            ViewPortChange(oldvp, newvp, zoomLayers.Zoom, zoomLayers.Zoom,Mouse.GetPosition(this));
             viewPort = newvp;
 
 
@@ -116,7 +116,7 @@ namespace RectangesZoom3
                 return;
 
             viewPort.Offset(v);
-            ViewPortChange(old, viewPort, zoomLayers.Zoom, zoomLayers.Zoom);
+            ViewPortChange(old, viewPort, zoomLayers.Zoom, zoomLayers.Zoom,Mouse.GetPosition(this));
         }
 
         private bool Validate(Rect check, int zoom)

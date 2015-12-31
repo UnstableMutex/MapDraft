@@ -25,7 +25,7 @@ namespace RectangesZoom3
             get { return _zoom; }
         }
 
-        public override void OnViewPortChange(Rect oldvp, Rect newvp, byte currentZoom, byte newZoom)
+        public override void OnViewPortChange(Rect oldvp, Rect newvp, byte currentZoom, byte newZoom,Point mouse)
         {
             //var oldmulti = oldvp.Width/Constants.TileSize;
             //var oldzoom = Math.Log(oldmulti,2) - 1;

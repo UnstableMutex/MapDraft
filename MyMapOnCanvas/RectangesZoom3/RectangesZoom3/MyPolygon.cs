@@ -1,15 +1,24 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 using System.Windows.Shapes;
+using Color = System.Windows.Media.Color;
+using Point = System.Windows.Point;
 
 namespace RectangesZoom3
 {
     class MyPolygon
     {
+     
+        static MyPolygon()
+        {
+            
+        }
         private readonly sbyte _mark;
 
         public MyPolygon(sbyte mark)
@@ -70,12 +79,14 @@ namespace RectangesZoom3
             Polygon = GetPolyFromLL(Figures, canvas);
 
             canvas.Children.Add(Polygon);
+            Canvas.SetZIndex(Polygon,1);
 
             // return Figures;
         }
         Polygon GetPolyFromLL(LinkedList<FrameworkElement> polygon, Canvas canvas)
         {
-            Polygon p = new Polygon();
+            Polygon p = CreatePolygon();
+
             var ths = polygon.ToList().OfType<Thumb>();
             var rname = _mark > 0 ? "pPlus" : "pMinus";
             var res = canvas.Resources[rname] as Style;
@@ -86,6 +97,23 @@ namespace RectangesZoom3
             }
             return p;
 
+        }
+
+        private System.Windows.Shapes.Polygon CreatePolygon()
+        {
+            Polygon p = new Polygon();
+           
+            if (_mark > 0)
+            {
+                          p.Fill = System.Windows.Media.Brushes.Blue;
+  
+            }
+            else
+            {
+                p.Fill = Constants.NegativeBrush;
+            }
+
+            return p;
         }
 
         const int size = 20;
@@ -233,6 +261,10 @@ namespace RectangesZoom3
             UpdatePolygon(old, n);
 
         }
+        private void DragThumb(Thumb thumb, Vector offset)
+        {
+            DragThumb(thumb, new Point(offset.X, offset.Y));
+        }
 
         static void MoveOnCanvas(Thumb thumb, Point offset)
         {
@@ -253,8 +285,9 @@ namespace RectangesZoom3
             return Figures.Find(thumb);
         }
 
-        public void Zoom(double zoomFactor)
+        public void Zoom(double zoomFactor,Point mouse)
         {
+            var pos = mouse;
             foreach (var fe in Figures)
             {
 
@@ -264,7 +297,15 @@ namespace RectangesZoom3
                 }
                 if (fe is Thumb)
                 {
-
+                    var t = fe as Thumb;
+                    var center = t.GetCenter();
+                  
+                    var offsetX = -1 * (pos.X - center.X);
+                    var offsetY = -1 * (pos.Y - center.Y);
+                    var x1 = pos.X - zoomFactor * (pos.X - center.X);
+                    var y1 = pos.Y - zoomFactor * (pos.Y - center.Y);
+                    Vector v = (new Point(x1, y1) - center);
+                    DragThumb(t, v);
                 }
             }
         }
