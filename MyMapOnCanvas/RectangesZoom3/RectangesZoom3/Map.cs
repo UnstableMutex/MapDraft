@@ -19,7 +19,7 @@ namespace RectangesZoom3
         public Map()
         {
             var arr =
-                Enumerable.Range(0, 15).Select(x => new ZoomOverlay((byte) x, this)).OrderBy(x => x.Zoom).ToArray();
+                Enumerable.Range(0, 17).Select(x => new ZoomOverlay((byte) x, this)).OrderBy(x => x.Zoom).ToArray();
             zoomLayers = new ZoomItemsCollection(currentZoom);
             regionOverlay = new RegionOverlay(this);
             foreach (var item in arr)
@@ -42,7 +42,8 @@ namespace RectangesZoom3
 
         protected override void OnMouseRightButtonUp(MouseButtonEventArgs e)
         {
-            Debug.Print("click");
+            var loc = MercatorWrapper.GetLocation(e.GetPosition(this), _viewPort,zoomLayers.Zoom);
+            Debug.Print("lat:{0}",loc.Latitude);
             zoomLayers.Click(e.GetPosition(this));
         }
 
