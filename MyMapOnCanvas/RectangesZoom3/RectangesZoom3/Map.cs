@@ -105,7 +105,6 @@ namespace RectangesZoom3
         {
             var isnotvalid = (check.X > 0) | check.Y > 0;
             isnotvalid |= check.Size.Width - check.X >= Constants.TileSize*Math.Pow(2, zoom);
-            // | check.BottomRight.Y < 0;
             isnotvalid |= check.Size.Height - check.Y >= Constants.TileSize*Math.Pow(2, zoom); //хз почему
             return !(isnotvalid);
         }
