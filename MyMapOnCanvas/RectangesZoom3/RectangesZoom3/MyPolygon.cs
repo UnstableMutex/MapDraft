@@ -35,9 +35,9 @@ namespace RectangesZoom3
         {
             Thumb t = new Thumb();
             t.DragDelta += ThumbDragDelta;
-            Canvas.SetLeft(t, position.X - size/2);
-            Canvas.SetTop(t, position.Y - size/2);
-            var res = canvas.Resources[typeof (Thumb)] as Style;
+            Canvas.SetLeft(t, position.X - size / 2);
+            Canvas.SetTop(t, position.Y - size / 2);
+            var res = canvas.Resources[typeof(Thumb)] as Style;
             t.Style = res;
             return t;
         }
@@ -108,8 +108,8 @@ namespace RectangesZoom3
             var lastThumb = node.CircledNext().Value as Thumb;
             var thumbList = node.List.OfType<Thumb>().ToList();
             var thumbIndex = thumbList.IndexOf(lastThumb);
-            var centerX = (line.X1 + line.X2)/2;
-            var centerY = (line.Y1 + line.Y2)/2;
+            var centerX = (line.X1 + line.X2) / 2;
+            var centerY = (line.Y1 + line.Y2) / 2;
             line.X2 = centerX;
             line.Y2 = centerY;
             var newPoint = new Point(centerX, centerY);
@@ -136,19 +136,24 @@ namespace RectangesZoom3
             var canvas = first.Parent as Canvas;
             t.SetFirstPointAsElement(first);
             t.SetLastPointAsElement(last);
-            var res = canvas.Resources[typeof (Line)] as Style;
+            var res = canvas.Resources[typeof(Line)] as Style;
             t.Style = res;
             return t;
         }
 
         private void UpdatePolygon(Point old, Point n)
         {
-            var pol = Polygon;
-            var foundPoint =
-                pol.Points.Single(p => Math.Abs(p.X - old.X) < double.Epsilon & Math.Abs(p.Y - old.Y) < double.Epsilon);
-            var ind = pol.Points.IndexOf(foundPoint);
-            pol.Points.RemoveAt(ind);
-            pol.Points.Insert(ind, n);
+            if (Polygon != null)
+            {
+                var pol = Polygon;
+                var foundPoint =
+                    pol.Points.Single(
+                        p => Math.Abs(p.X - old.X) < double.Epsilon & Math.Abs(p.Y - old.Y) < double.Epsilon);
+                var ind = pol.Points.IndexOf(foundPoint);
+                pol.Points.RemoveAt(ind);
+                pol.Points.Insert(ind, n);
+            }
+
         }
 
         public LinkedList<FrameworkElement> Figures { get; private set; }
@@ -164,13 +169,21 @@ namespace RectangesZoom3
             LinkedListNode<FrameworkElement> tmp;
             if ((tmp = node.CircledPrevious()) != null)
             {
-                Line start = (Line) tmp.Value;
-                start.SetLastPointAsElement(thumb);
+                var start = tmp.Value as Line;
+                if (start != null)
+                {
+                    start.SetLastPointAsElement(thumb);
+                }
             }
             if ((tmp = node.CircledNext()) != null)
             {
-                Line start = (Line) tmp.Value;
-                start.SetFirstPointAsElement(thumb);
+
+                Line end = tmp.Value as Line;
+                if (end != null)
+                {
+                    end.SetFirstPointAsElement(thumb);
+                }
+
             }
         }
 
@@ -182,7 +195,7 @@ namespace RectangesZoom3
                 return;
             }
             var ll = polygon.List;
-            if (ll.Count%2 != 0)
+            if (ll.Count % 2 != 0)
             {
                 //удаляем только из замкнутых полигонов т.к. незамкнутый можно еще редактировать
                 return;
@@ -269,8 +282,8 @@ namespace RectangesZoom3
                 {
                     var t = fe as Thumb;
                     var center = t.GetCenter();
-                    var x1 = pos.X - zoomFactor*(pos.X - center.X);
-                    var y1 = pos.Y - zoomFactor*(pos.Y - center.Y);
+                    var x1 = pos.X - zoomFactor * (pos.X - center.X);
+                    var y1 = pos.Y - zoomFactor * (pos.Y - center.Y);
                     Vector v = (new Point(x1, y1) - center);
                     DragThumb(t, v);
                 }
