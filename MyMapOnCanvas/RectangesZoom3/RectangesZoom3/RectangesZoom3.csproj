@@ -60,7 +60,9 @@
     <Compile Include="Ext.cs" />
     <Compile Include="ImageCache.cs" />
     <Compile Include="IZoomItems.cs" />
+    <Compile Include="Location.cs" />
     <Compile Include="MapBase.cs" />
+    <Compile Include="MercatorTransform.cs" />
     <Compile Include="MyImageDownloaderAsync.cs" />
     <Compile Include="MyPolygon.cs" />
     <Compile Include="OverlayBase.cs" />

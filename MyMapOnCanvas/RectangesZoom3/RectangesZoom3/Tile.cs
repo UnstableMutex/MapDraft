@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Windows.Controls;
+using Image = System.Windows.Controls.Image;
 
 namespace RectangesZoom3
 {
