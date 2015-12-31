@@ -71,7 +71,7 @@ namespace RectangesZoom3
             // polygons.Add(polygon);
             Polygon = GetPolyFromLL(Figures, canvas);
             canvas.Children.Add(Polygon);
-            Canvas.SetZIndex(Polygon, 1);
+            Panel.SetZIndex(Polygon, 1);
 
             // return Figures;
         }
@@ -90,7 +90,7 @@ namespace RectangesZoom3
             return p;
         }
 
-        private System.Windows.Shapes.Polygon CreatePolygon()
+        private Polygon CreatePolygon()
         {
             Polygon p = new Polygon();
             p.Fill = _mark > 0 ? System.Windows.Media.Brushes.Blue : Constants.NegativeBrush;
@@ -145,7 +145,7 @@ namespace RectangesZoom3
 
         private void UpdatePolygon(Point old, Point n)
         {
-            var pol = this.Polygon;
+            var pol = Polygon;
             var foundPoint =
                 pol.Points.Single(p => Math.Abs(p.X - old.X) < double.Epsilon & Math.Abs(p.Y - old.Y) < double.Epsilon);
             var ind = pol.Points.IndexOf(foundPoint);

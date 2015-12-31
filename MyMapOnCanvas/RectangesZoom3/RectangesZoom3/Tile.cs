@@ -22,8 +22,8 @@ namespace RectangesZoom3
                 var imagesource = ImageCache.GetImage(_tid);
 
                 //this.Source = imagesource;
-                this.Children.Add(new Image() {Source = imagesource});
-                this.Children.Add(new TextBlock() {Text = string.Format("{0} {1}", _tid.Pos.X, _tid.Pos.Y)});
+                Children.Add(new Image() {Source = imagesource});
+                Children.Add(new TextBlock() {Text = string.Format("{0} {1}", _tid.Pos.X, _tid.Pos.Y)});
             }
             catch (FileNotFoundException)
             {

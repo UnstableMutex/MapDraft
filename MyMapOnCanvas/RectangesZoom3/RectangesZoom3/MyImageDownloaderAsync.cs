@@ -5,8 +5,6 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Brush = System.Windows.Media.Brush;
-using Brushes = System.Windows.Media.Brushes;
 
 namespace RectangesZoom3
 {

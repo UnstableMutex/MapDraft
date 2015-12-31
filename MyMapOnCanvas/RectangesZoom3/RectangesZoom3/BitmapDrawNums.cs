@@ -9,7 +9,7 @@ namespace RectangesZoom3
     static class BitmapDrawNums
     {
         static Font f = new Font("Times New Roman", 20);
-        private static System.Drawing.Brush b = System.Drawing.Brushes.Black;
+        private static Brush b = Brushes.Black;
 
         public static BitmapSource DrawNums(BitmapSource bs, int x, int y, int zoom)
         {
@@ -18,7 +18,7 @@ namespace RectangesZoom3
             using (var g = Graphics.FromImage(bm))
             {
                 var s = string.Format("z{0} x{1} y{2}", zoom, x, y);
-                g.DrawString(s, f, b, (float) 1, (float) 1);
+                g.DrawString(s, f, b, 1, 1);
                 return ConvertBitmap(bm);
             }
         }

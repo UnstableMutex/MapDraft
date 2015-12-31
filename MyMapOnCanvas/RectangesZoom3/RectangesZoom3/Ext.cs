@@ -33,12 +33,12 @@ namespace RectangesZoom3
 
         static double GetCenterX(Control c)
         {
-            return overNan(Canvas.GetLeft(c)) + c.Width/2;
+            return OverNan(Canvas.GetLeft(c)) + c.Width/2;
         }
 
         static double GetCenterY(Control c)
         {
-            return overNan(Canvas.GetTop(c)) + c.Height/2;
+            return OverNan(Canvas.GetTop(c)) + c.Height/2;
         }
 
         public static void SetLastPointAsElement(this Line l, Control c)
@@ -47,7 +47,7 @@ namespace RectangesZoom3
             l.Y2 = GetCenterY(c);
         }
 
-        static double overNan(double d)
+        static double OverNan(double d)
         {
             if (double.IsNaN(d))
             {

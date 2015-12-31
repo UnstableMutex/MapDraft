@@ -46,8 +46,8 @@ namespace RectangesZoom3
         {
             Debug.Print("mdown");
             base.OnMouseLeftButtonDown(e);
-            this.Focus(); // Make sure we get the keyboard
-            if (this.CaptureMouse())
+            Focus(); // Make sure we get the keyboard
+            if (CaptureMouse())
             {
                 _mouseCaptured = true;
                 _previousMouse = e.GetPosition(null);
@@ -61,7 +61,7 @@ namespace RectangesZoom3
         {
             Debug.Print("mup");
             base.OnMouseLeftButtonUp(e);
-            this.ReleaseMouseCapture();
+            ReleaseMouseCapture();
             _mouseCaptured = false;
         }
 

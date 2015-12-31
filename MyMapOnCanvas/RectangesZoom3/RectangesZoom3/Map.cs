@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace RectangesZoom3
 {
@@ -51,25 +47,19 @@ namespace RectangesZoom3
         }
 
 
-        private Rect viewPort = Rect.Empty;
+        private Rect _viewPort = Rect.Empty;
         private byte zoomFactor = 2;
 
         protected override void OnZoom(Point mouse, byte currentZoom, byte newZoom)
         {
             //вьюпорт решает как сместить область!
-            Debug.Print("newzoom: {0}", newZoom);
             var scaleMultiplier = Math.Pow(zoomFactor, newZoom - currentZoom);
-            var newtopleft = viewPort.TopLeft + (mouse - viewPort.TopLeft)*(1 - scaleMultiplier);
+            var newtopleft = _viewPort.TopLeft + (mouse - _viewPort.TopLeft)*(1 - scaleMultiplier);
             var newzoomRect = new Rect(newtopleft,
-                new Size(viewPort.Size.Width*scaleMultiplier, viewPort.Size.Height*scaleMultiplier));
-            var canvasrect = new Rect(0, 0, ActualWidth, ActualHeight);
-            var x2 = canvasrect.Right;
-            var y2 = canvasrect.Bottom;
+                new Size(_viewPort.Size.Width*scaleMultiplier, _viewPort.Size.Height*scaleMultiplier));
             var newrect = new Rect(newzoomRect.TopLeft, newzoomRect.Size);
-            var isvalid = Validate(newrect, newZoom);
-            Debug.Print("valid: {0}", isvalid);
-            ViewPortChange(viewPort, newrect, currentZoom, newZoom, mouse);
-            viewPort = newrect;
+            ViewPortChange(_viewPort, newrect, currentZoom, newZoom, mouse);
+            _viewPort = newrect;
             zoomLayers.Zoom = newZoom;
         }
 
@@ -80,11 +70,11 @@ namespace RectangesZoom3
 
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
         {
-            if (viewPort.IsEmpty)
+            if (_viewPort.IsEmpty)
             {
-                viewPort = new Rect(0, 0, ActualWidth, ActualHeight);
+                _viewPort = new Rect(0, 0, ActualWidth, ActualHeight);
             }
-            var oldvp = viewPort;
+            var oldvp = _viewPort;
             var newvp = new Rect(oldvp.TopLeft, sizeInfo.NewSize);
             var valid = Validate(newvp, zoomLayers.Zoom);
             if (!valid)
@@ -95,20 +85,20 @@ namespace RectangesZoom3
                 newvp.Size = sizeInfo.NewSize;
             }
             ViewPortChange(oldvp, newvp, zoomLayers.Zoom, zoomLayers.Zoom, Mouse.GetPosition(this));
-            viewPort = newvp;
+            _viewPort = newvp;
         }
 
 
         protected override void OnDragMap(Vector v)
         {
-            var old = viewPort;
-            var check = viewPort;
+            var old = _viewPort;
+            var check = _viewPort;
             check.Offset(v);
             var isvalid = Validate(check, zoomLayers.Zoom);
             if (!isvalid)
                 return;
-            viewPort.Offset(v);
-            ViewPortChange(old, viewPort, zoomLayers.Zoom, zoomLayers.Zoom, Mouse.GetPosition(this));
+            _viewPort.Offset(v);
+            ViewPortChange(old, _viewPort, zoomLayers.Zoom, zoomLayers.Zoom, Mouse.GetPosition(this));
         }
 
         private bool Validate(Rect check, int zoom)
